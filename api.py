@@ -67,7 +67,6 @@ def testeSQL():
     cursor = db.cursor()
     cursor.execute("SELECT VERSION()")
     data = cursor.fetchone()
-    #print ("Database version : %s " % data)
     return jsonify("Database version : %s " % data), 200
 
 @app.route('/foo', methods=['POST']) 
@@ -75,12 +74,9 @@ def foo2():
     data = request.json
     return jsonify(data)
 
-
- 
 @app.route('/posts/gen', methods=['POST'])
 def genDB():
     return jsonify(), 201
-
 
 def main():
     port = int(os.environ.get("PORT", 5000))
