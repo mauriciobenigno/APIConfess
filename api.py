@@ -1,10 +1,17 @@
 import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import pymysql
+import pymysql	
+import atexit # para fechar a conn com o banco sempre que a api fechar
 
+# Conexão com o SQL
+db = pymysql.connect("us-cdbr-iron-east-05.cleardb.net","bc3024c3520660","41d897e1","heroku_5b193e052a7ad86" )
+def fecharDB():
+    db.close()
+atexit.register(fecharDB) #sempre que detectar que o terminal foi fechado, ele executa
+
+# Flask 
 app = Flask(__name__)
-
 cors = CORS(app, resource={r"/*":{"origins": "*"}})
 
 @app.route("/", methods=['GET'])
@@ -51,6 +58,15 @@ def getAllConfess():
 @app.route('/posts/fav', methods=['GET'])
 def getFavConfess():
     return jsonify(posts), 200
+
+@app.route('/teste', methods=['GET'])
+def testeSQL():
+    cursor = db.cursor()
+    cursor.execute("SELECT VERSION()")
+    data = cursor.fetchone()
+    #print ("Database version : %s " % data)
+    return jsonify("Database version : %s " % data), 200
+
 
 @app.route('/posts', methods=['POST'])
 def addConfess():
