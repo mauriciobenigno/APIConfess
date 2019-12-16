@@ -71,7 +71,7 @@ def testeSQL():
 
 @app.route('/posts', methods=['POST'])
 def addConfess():
-	data = request.get_json()
+	#data = request.get_json()
 	#posts.append(data)
     '''cursor = db.cursor()
     query = """INSERT INTO postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS)
@@ -81,7 +81,7 @@ def addConfess():
     cursor.commit()
     cursor.lastrowid
     data['id'] = cursor.lastrowid'''  
-    return jsonify(data), 201
+    #return jsonify(data), 201
 
 @app.route('/posts/gen', methods=['POST'])
 def genDB():
