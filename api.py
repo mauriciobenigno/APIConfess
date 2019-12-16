@@ -75,9 +75,11 @@ def foo():
 
 @app.route('/posts', methods=['POST'])
 def addConfess():
-	#data = request.json
-	#posts.append(data)
-    '''cursor = db.cursor()
+	data = request.json
+	posts.append(daa)
+    return jsonify(data), 201
+
+'''cursor = db.cursor()
     query = """INSERT INTO postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS)
     VALUES (%s, %s, %s)"""
     valores = (data['texto'], data['cor'], data['curtidas'])
@@ -85,8 +87,7 @@ def addConfess():
     cursor.commit()
     cursor.lastrowid
     data['id'] = cursor.lastrowid'''  
-    #return jsonify(data), 201
-
+	
 @app.route('/posts/gen', methods=['POST'])
 def genDB():
     return jsonify(data), 201
