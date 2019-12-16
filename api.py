@@ -71,7 +71,7 @@ def testeSQL():
 
 @app.route('/posts', methods=['POST'])
 def addConfess():
-	data = json.loads(request.data)
+	data = request.get_json()
 	#posts.append(data)
     '''cursor = db.cursor()
     query = """INSERT INTO postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS)
