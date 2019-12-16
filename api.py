@@ -33,7 +33,6 @@ posts = [
     }
 ]
 
-
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
     return jsonify(posts), 200
