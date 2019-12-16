@@ -1,6 +1,7 @@
 import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import json
 import pymysql	
 import atexit # para fechar a conn com o banco sempre que a api fechar
 
@@ -67,21 +68,21 @@ def testeSQL():
     #print ("Database version : %s " % data)
     return jsonify("Database version : %s " % data), 200
 
+@app.route('/foo', methods=['POST']) 
+def foo():
+    data = request.json
+    return jsonify(data)	
 
 @app.route('/posts', methods=['POST'])
 def addConfess():
-    cursor = db.cursor()
-    query = "INSERT INTO postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES (%s, %s, %s)"
-    valores = (data['texto'], data['cor'], data['curtidas'])
-    cursor.execute(query, valores)
-    cursor.commit()
-    cursor.lastrowid
-    data['id'] = cursor.lastrowid  
-    return jsonify(data), 201
-
+	data = request.json
+	posts.append(data)
+	return jsonify(data), 201
+ 
+	
 @app.route('/posts/gen', methods=['POST'])
 def genDB():
-    return jsonify(data), 201
+    return jsonify(), 201
 
 
 def main():
