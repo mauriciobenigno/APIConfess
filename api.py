@@ -48,7 +48,10 @@ def getAllConfess():
 
 @app.route('/posts/fav', methods=['GET'])
 def getFavConfess():
-    return jsonify(posts), 200
+    cursor = db.cursor()
+    cursor.execute("SELECT VERSION()")
+    data = cursor.fetchone()
+    return jsonify(data), 200
 
 @app.route('/teste', methods=['GET'])
 def testeSQL():
