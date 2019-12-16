@@ -37,7 +37,7 @@ posts = [
 def getAllConfess():
     return jsonify(posts), 200
 
-@app.route('/posts/fav', methods=['GET'])
+@app.route('/', methods=['GET'])
 def getFavConfess():
     return jsonify(posts), 200
 
