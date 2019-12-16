@@ -71,8 +71,7 @@ def testeSQL():
 @app.route('/posts', methods=['POST'])
 def addConfess():
     cursor = db.cursor()
-    query = """INSERT INTO postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS)
-    VALUES (%s, %s, %s)"""
+    query = "INSERT INTO postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES (%s, %s, %s)"
     valores = (data['texto'], data['cor'], data['curtidas'])
     cursor.execute(query, valores)
     cursor.commit()
