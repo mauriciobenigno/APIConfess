@@ -68,6 +68,10 @@ def testeSQL():
     #print ("Database version : %s " % data)
     return jsonify("Database version : %s " % data), 200
 
+@app.route('/foo', methods=['POST']) 
+def foo():
+    data = request.json
+    return jsonify(data)	
 
 @app.route('/posts', methods=['POST'])
 def addConfess():
@@ -81,7 +85,7 @@ def addConfess():
     cursor.commit()
     cursor.lastrowid
     data['id'] = cursor.lastrowid'''  
-    return jsonify(data), 201
+    #return jsonify(data), 201
 
 @app.route('/posts/gen', methods=['POST'])
 def genDB():
