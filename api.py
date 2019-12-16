@@ -64,15 +64,19 @@ def testeSQL():
 @app.route('/foo', methods=['POST']) 
 def foo():
     data = request.json
-    return jsonify(data)	
+    return jsonify(data)
 
-@app.route('/posts', methods=['POST'])
-def addConfess():
-	data = request.json
-	posts.append(data)
-	return jsonify(data), 201
+
+@app.route('/posts', methods=['POST']) 
+def foo():
+    data = request.json
+    cursor = db.cursor()
+    query = "INSERT INTO postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES (%s, %s, %s)"
+    valores = (data['texto'], data['cor'], data['curtidas'])
+    cursor.execute(query,valores)
+    data['id'] = cursor.lastrowid()
+    return jsonify(data), 201
  
-	
 @app.route('/posts/gen', methods=['POST'])
 def genDB():
     return jsonify(), 201
