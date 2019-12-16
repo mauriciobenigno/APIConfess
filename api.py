@@ -13,16 +13,6 @@ atexit.register(fecharDB) #sempre que detectar que o terminal foi fechado, ele e
 
 # Flask 
 app = Flask(__name__)
-cors = CORS(app, resource={r"/*":{"origins": "*"}})
-
-@app.route("/", methods=['GET'])
-def index():
-    return "<h1>Hello World!</h1>"
-
-@app.route("/deploy", methods=['GET'])    
-def deploy():
-    return "<h1>Testando deploy GitHub x Heroku </h1>"
-
 
 posts = [
     {
