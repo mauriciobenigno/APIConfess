@@ -2,11 +2,14 @@ import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import json
-import pymysql	
+from mysql.connector import MySQLConnection
 import atexit # para fechar a conn com o banco sempre que a api fechar
 
 # Conexão com o SQL
-db = pymysql.connect("us-cdbr-iron-east-05.cleardb.net","bc3024c3520660","41d897e1","heroku_5b193e052a7ad86" )
+db = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
+                                       database='heroku_5b193e052a7ad86',
+                                       user='bc3024c3520660',
+                                       password='41d897e1')
 def fecharDB():
     db.close()
 atexit.register(fecharDB) #sempre que detectar que o terminal foi fechado, ele executa
@@ -59,8 +62,7 @@ def foo():
     #query = "INSERT INTO heroku_5b193e052a7ad86.postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES ('Bacana', 5, 5)"
     #valores = (data['texto'], data['cor'], data['curtidas'])
     cursor.execute("INSERT INTO heroku_5b193e052a7ad86.postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES ('Bacana', 5, 5)")
-    cursor.commit()
-    #data['id'] = cursor.lastrowid()
+    data['id'] = cursor.lastrowid()
     return jsonify(data), 201
 
 @app.route('/teste', methods=['GET'])
