@@ -71,6 +71,13 @@ def addPost():
     #retorna o objeto para o emitente com o ID atualizado
     return jsonify(data), 201
 
+@app.route('/user/<apelido>', methods=['GET'])
+def getUserInfo(apelido):
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.APELIDO ='"+apelido+"' ;")
+    row = cursor.fetchone()
+    return jsonify(row), 200
+
 @app.route('/teste', methods=['GET'])
 def testeSQL():
     cursor = conn.cursor()
