@@ -56,10 +56,10 @@ def getFavConfess():
 def foo():
     data = request.json
     cursor = db.cursor()
-    query = "INSERT INTO heroku_5b193e052a7ad86.postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES ('Bacana', 5, 5)"
+    #query = "INSERT INTO heroku_5b193e052a7ad86.postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES ('Bacana', 5, 5)"
     #valores = (data['texto'], data['cor'], data['curtidas'])
-    cursor.execute(query)
-    data['id'] = cursor.lastrowid()
+    cursor.execute("INSERT INTO heroku_5b193e052a7ad86.postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES ('Bacana', 5, 5)")
+    #data['id'] = cursor.lastrowid()
     return jsonify(data), 201
 
 @app.route('/teste', methods=['GET'])
