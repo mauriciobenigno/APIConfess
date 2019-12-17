@@ -72,21 +72,6 @@ def addUser():
     return jsonify(data), 201
 
 
-@app.route('/user/<id>', methods=['POST'])
-def addUserOnPost(userID):
-    #recebe o objeto json
-    data = request.json
-    #Adiciona relacao Post x User
-    query = "INSERT INTO heroku_5b193e052a7ad86.usuariosposts(ID_USUARIO,ID_POST) " \
-                    "VALUES(%s,%s)"
-    args = (data['idUsuario'],data['idPost'])    
-    cursor = conn.cursor()
-    cursor.execute(query, args)#executa o comando SQL
-    conn.commit()#consolida as acoes no SQL
-    return jsonify(data), 201
-
-
-
 @app.route('/user/<apelido>', methods=['GET'])
 def getUser(apelido):
     cursor = conn.cursor()
