@@ -93,7 +93,7 @@ def getUserPosts(apelido):
         "where a.APELIDO = '"+apelido+"'")
     row = cursor.fetchone()
     while row is not None:
-        data = {'id': row[0],'apelido': row[1]}
+        data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
         posts.append(data)
         row = cursor.fetchone()
     return jsonify(posts), 200
