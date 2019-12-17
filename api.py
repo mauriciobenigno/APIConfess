@@ -64,12 +64,24 @@ def addUser():
     #retorna o objeto para o emitente com o ID atualizado
     return jsonify(data), 201
 
+@app.route('/users/all', methods=['GET'])
+def getAllUsers():
+    posts = []
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.usuarios')
+    row = cursor.fetchone()
+    while row is not None:
+        data = {'id': row[0],'apelido': row[1]}
+        posts.append(data)
+        row = cursor.fetchone()
+    return jsonify(posts), 200
 
-@app.route('/user/<apelido>', methods=['GET'])
+@app.route('/users/<apelido>', methods=['GET'])
 def getUser(apelido):
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.APELIDO ='"+apelido+"' ;")
-    data = cursor.fetchone()
+    row = cursor.fetchone()
+    data = {'id': row[0],'apelido': row[1]}
     return jsonify(data), 200
 
 @app.route('/teste', methods=['GET'])
