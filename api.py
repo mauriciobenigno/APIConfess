@@ -20,6 +20,7 @@ app = Flask(__name__)
 
 posts = []
 
+@app.route('/init', methods=['GET'])
 def carregaPosts():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.postagens")
@@ -28,7 +29,7 @@ def carregaPosts():
         data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3]}
         posts.append(data)
         row = cursor.fetchone()
-    print(posts)
+    return jsonify(posts), 200
 
 
 @app.route('/posts/all', methods=['GET'])
