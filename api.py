@@ -70,7 +70,7 @@ def addUserFav():
     data = request.json
     #Adicionar usuário
     query = "INSERT INTO heroku_5b193e052a7ad86.usuariosfavoritos(ID_USUARIO,ID_POST) " \
-                    "VALUES(%s,%S)"
+                    "VALUES(%s,%s)"
     args = (data['usuarioid'],data['postid'])    
     cursor = conn.cursor()
     cursor.execute(query, args)#executa o comando SQL
