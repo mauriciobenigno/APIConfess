@@ -26,7 +26,7 @@ def carregaPosts():
     cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.postagens")
     row = cursor.fetchone()
     while row is not None:
-        data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3]}
+        data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
         posts.append(data)
         row = cursor.fetchone()
     return jsonify(posts), 200
