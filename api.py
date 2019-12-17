@@ -11,6 +11,7 @@ conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
                                        database='heroku_5b193e052a7ad86',
                                        user='bc3024c3520660',
                                        password='41d897e1')
+cursor = conn.cursor()
 
 def abrirDB():
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
@@ -35,7 +36,7 @@ def addPost():
                         "VALUES(%s,%s,%s,%s)"
         args = (data['texto'], data['cor'], data['curtidas'],data['autorid'])
         #posicionar o cursor no sql    
-        cursor = conn.cursor()
+        #cursor = conn.cursor()
         #executa o comando SQL
         cursor.execute(query, args)
         #extrai o ID que foi inserido
@@ -51,7 +52,7 @@ def addUser():
         data = request.json
         #Adicionar usuário
         query = "INSERT INTO heroku_5b193e052a7ad86.usuarios(APELIDO) VALUES('"+data['apelido']+"')"
-        cursor = conn.cursor()
+        #cursor = conn.cursor()
         cursor.execute(query)#executa o comando SQL
         data['id'] = cursor.lastrowid #extrai o ID que foi inserido e coloca no objeto recebido
         conn.commit()#consolida as acoes no SQL
@@ -66,7 +67,7 @@ def addUserFav():
         query = "INSERT INTO heroku_5b193e052a7ad86.usuariosfavoritos(ID_USUARIO,ID_POST) " \
                         "VALUES(%s,%s)"
         args = (data['usuarioid'],data['postid'])    
-        cursor = conn.cursor()
+        #cursor = conn.cursor()
         cursor.execute(query, args)#executa o comando SQL
         conn.commit()#consolida as acoes no SQL
         #retorna o objeto para o emitente com o ID atualizado
@@ -75,7 +76,7 @@ def addUserFav():
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
         posts = []
-        cursor = conn.cursor()
+        #cursor = conn.cursor()
         cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.postagens')
         row = cursor.fetchone()
         while row is not None:
@@ -87,7 +88,7 @@ def getAllConfess():
 @app.route('/users/all', methods=['GET'])
 def getAllUsers():
         posts = []
-        cursor = conn.cursor()
+        #cursor = conn.cursor()
         cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.usuarios')
         row = cursor.fetchone()
         while row is not None:
@@ -98,7 +99,7 @@ def getAllUsers():
 
 @app.route('/users/<apelido>', methods=['GET'])
 def getUser(apelido):
-        cursor = conn.cursor()
+        #cursor = conn.cursor()
         cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.APELIDO ='"+apelido+"' ;")
         row = cursor.fetchone()
         data = {'id': row[0],'apelido': row[1]}
@@ -106,7 +107,7 @@ def getUser(apelido):
 
 @app.route('/users/name/<id>', methods=['GET'])
 def getUserName(id):
-        cursor = conn.cursor()
+        #cursor = conn.cursor()
         cursor.execute("SELECT a.APELIDO FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.ID ='"+id+"' ;")
         row = cursor.fetchone()
         data = row[0]
