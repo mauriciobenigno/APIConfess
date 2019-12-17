@@ -113,6 +113,22 @@ def getUserPosts(apelido):
         row = cursor.fetchone()
     return jsonify(posts), 200
 
+@app.route('/users/favs/<apelido>', methods=['GET'])
+def getUserFavs(apelido):
+    posts = []
+    cursor = conn.cursor()
+    query = """SELECT c.* FROM heroku_5b193e052a7ad86.usuarios as a
+    INNER JOIN heroku_5b193e052a7ad86.usuariosfavoritos as b ON a.ID = b.ID_USUARIO
+    INNER JOIN heroku_5b193e052a7ad86.postagens as c ON b.ID_POST = c.ID
+    WHERE a.APELIDO = '{}'""".format(apelido)
+    cursor.execute(query)
+    row = cursor.fetchone()
+    while row is not None:
+        data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
+        posts.append(data)
+        row = cursor.fetchone()
+    return jsonify(posts), 200
+
 @app.route('/teste', methods=['GET'])
 def testeSQL():
     cursor = conn.cursor()
