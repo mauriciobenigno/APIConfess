@@ -31,7 +31,6 @@ def carregaPosts():
         row = cursor.fetchone()
     return jsonify(posts), 200
 
-
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
     return jsonify(posts), 200
