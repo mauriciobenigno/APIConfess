@@ -21,6 +21,7 @@ app = Flask(__name__)
 posts = []
 
 def carregaPosts():
+    cursor = conn.cursor()
     cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.postagens")
     row = cursor.fetchone()
     while row is not None:
