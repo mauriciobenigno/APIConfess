@@ -87,7 +87,9 @@ def getUser(apelido):
 @app.route('/users/posts/<apelido>', methods=['GET'])
 def getUserPosts(apelido):
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.APELIDO ='"+apelido+"' ;")
+    cursor.execute("SELECT b.* FROM heroku_5b193e052a7ad86.usuarios a "/
+        "INNER JOIN heroku_5b193e052a7ad86.postagens b ON b.USUARIO_ID = a.ID"/
+        "where a.APELIDO = '"+apelido+"'")
     row = cursor.fetchone()
     data = {'id': row[0],'apelido': row[1]}
     return jsonify(data), 200
