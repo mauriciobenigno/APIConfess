@@ -18,32 +18,16 @@ atexit.register(fecharDB) #sempre que detectar que o terminal foi fechado, ele e
 # Flask 
 app = Flask(__name__)
 
-posts = [
-    {
-        'id': 1,
-        'texto': 'teste 1',
-        'cor': 5,
-        'curtidas': 5
-    },
-    {
-        'id': 2,
-        'texto': 'teste 2',
-        'cor': 5,
-        'curtidas': 5
-    },
-    {
-        'id': 3,
-        'texto': 'teste 3',
-        'cor': 5,
-        'curtidas': 5
-    },
-    {
-        'id': 4,
-        'texto': ' teste 4',
-        'cor': 5,
-        'curtidas': 5
-    }
-]
+posts = []
+
+def carregaPosts():
+    cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.postagens")
+    row = cursor.fetchone()
+    while row is not None:
+        data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3]}
+        posts.append(data)
+        row = cursor.fetchone()
+
 
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
@@ -76,6 +60,7 @@ def testeSQL():
     return jsonify("Database version : %s " % row), 200
 
 def main():
+    carregaPosts()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
 
