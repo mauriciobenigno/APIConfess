@@ -52,6 +52,8 @@ def addPost():
     data['id'] = cursor.lastrowid
     #consolida as acoes no SQL
     conn.commit()
+    #Adiciona o novo post a lista sem ter que recarregar no sql
+    posts.append(data)
     #retorna o objeto para o emitente com o ID atualizado
     return jsonify(data), 201
 
