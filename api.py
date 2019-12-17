@@ -98,6 +98,14 @@ def getUser(apelido):
     data = {'id': row[0],'apelido': row[1]}
     return jsonify(data), 200
 
+@app.route('/users/name/<id>', methods=['GET'])
+def getUser(id):
+    cursor = conn.cursor()
+    cursor.execute("SELECT a.APELIDO FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.ID ='"+id+"' ;")
+    row = cursor.fetchone()s
+    data = row[0]
+    return jsonify(data), 200
+
 @app.route('/users/posts/<apelido>', methods=['GET'])
 def getUserPosts(apelido):
     posts = []
