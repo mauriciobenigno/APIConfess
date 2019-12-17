@@ -63,7 +63,7 @@ def addUser():
     #Adicionar usuário
     query = "INSERT INTO heroku_5b193e052a7ad86.usuarios(APELIDO) " \
                     "VALUES(%s)"
-    args = (data['apelido'])    
+    args = (data['apelido'],)    
     cursor = conn.cursor()
     cursor.execute(query, args)#executa o comando SQL
     data['id'] = cursor.lastrowid #extrai o ID que foi inserido e coloca no objeto recebido
