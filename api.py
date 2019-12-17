@@ -119,7 +119,7 @@ def getUser(id):
         abrirDB()
     cursor = conn.cursor()
     cursor.execute("SELECT a.APELIDO FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.ID ='"+id+"' ;")
-    row = cursor.fetchone()s
+    row = cursor.fetchone()
     data = row[0]
     return jsonify(data), 200
 
