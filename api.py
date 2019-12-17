@@ -22,6 +22,7 @@ posts = []
 
 @app.route('/init', methods=['GET'])
 def carregaPosts():
+    posts = []
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.postagens")
     row = cursor.fetchone()
@@ -67,13 +68,6 @@ def testeSQL():
 def main():
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.postagens")
-    row = cursor.fetchone()
-    while row is not None:
-        data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3]}
-        posts.append(data)
-        row = cursor.fetchone()
 
 if __name__ == "__main__":
     main()
