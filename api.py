@@ -7,7 +7,10 @@ from mysql.connector import Error
 import atexit # para fechar a conn com o banco sempre que a api fechar
 
 # Conexão com o SQL
-conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
+conn = None
+
+def abrirDB():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
                                        database='heroku_5b193e052a7ad86',
                                        user='bc3024c3520660',
                                        password='41d897e1')
@@ -18,20 +21,10 @@ atexit.register(fecharDB) #sempre que detectar que o terminal foi fechado, ele e
 # Flask 
 app = Flask(__name__)
 
-@app.route('/posts/all', methods=['GET'])
-def getAllConfess():
-    posts = []
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.postagens')
-    row = cursor.fetchone()
-    while row is not None:
-        data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
-        posts.append(data)
-        row = cursor.fetchone()
-    return jsonify(posts), 200
-
 @app.route('/posts', methods=['POST'])
 def addPost():
+    if not conn.is_connected():
+        abrirDB()
     #recebe o objeto json
     data = request.json
     #prepara a query para o sql
@@ -51,6 +44,8 @@ def addPost():
 
 @app.route('/users', methods=['POST'])
 def addUser():
+    if not conn.is_connected():
+        abrirDB()
     #recebe o objeto json
     data = request.json
     #Adicionar usuário
@@ -66,6 +61,8 @@ def addUser():
 
 @app.route('/users/fav', methods=['POST'])
 def addUserFav():
+    if not conn.is_connected():
+        abrirDB()
     #recebe o objeto json
     data = request.json
     #Adicionar usuário
@@ -78,8 +75,24 @@ def addUserFav():
     #retorna o objeto para o emitente com o ID atualizado
     return jsonify(data), 201
 
+@app.route('/posts/all', methods=['GET'])
+def getAllConfess():
+    if not conn.is_connected():
+        abrirDB()
+    posts = []
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.postagens')
+    row = cursor.fetchone()
+    while row is not None:
+        data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
+        posts.append(data)
+        row = cursor.fetchone()
+    return jsonify(posts), 200
+
 @app.route('/users/all', methods=['GET'])
 def getAllUsers():
+    if not conn.is_connected():
+        abrirDB()
     posts = []
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.usuarios')
@@ -92,6 +105,8 @@ def getAllUsers():
 
 @app.route('/users/<apelido>', methods=['GET'])
 def getUser(apelido):
+    if not conn.is_connected():
+        abrirDB()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.APELIDO ='"+apelido+"' ;")
     row = cursor.fetchone()
@@ -100,6 +115,8 @@ def getUser(apelido):
 
 @app.route('/users/name/<id>', methods=['GET'])
 def getUser(id):
+    if not conn.is_connected():
+        abrirDB()
     cursor = conn.cursor()
     cursor.execute("SELECT a.APELIDO FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.ID ='"+id+"' ;")
     row = cursor.fetchone()s
@@ -108,6 +125,8 @@ def getUser(id):
 
 @app.route('/users/posts/<apelido>', methods=['GET'])
 def getUserPosts(apelido):
+    if not conn.is_connected():
+        abrirDB()
     posts = []
     cursor = conn.cursor()
     query = """SELECT b.* FROM heroku_5b193e052a7ad86.usuarios a
@@ -123,6 +142,8 @@ def getUserPosts(apelido):
 
 @app.route('/users/favs/<apelido>', methods=['GET'])
 def getUserFavs(apelido):
+    if not conn.is_connected():
+        abrirDB()
     posts = []
     cursor = conn.cursor()
     query = """SELECT c.* FROM heroku_5b193e052a7ad86.usuarios as a
@@ -139,12 +160,15 @@ def getUserFavs(apelido):
 
 @app.route('/teste', methods=['GET'])
 def testeSQL():
+    if not conn.is_connected():
+        abrirDB()
     cursor = conn.cursor()
     cursor.execute("SELECT VERSION()")
     row = cursor.fetchone()
     return jsonify("Database version : %s " % row), 200
 
 def main():
+    abrirDB()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
 
