@@ -20,9 +20,9 @@ app = Flask(__name__)
 
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
-	posts = []
-	cursor = conn.cursor()
-	cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.postagens')
+    posts = []
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.postagens')
     row = cursor.fetchone()
     while row is not None:
         data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
