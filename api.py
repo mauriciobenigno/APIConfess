@@ -40,9 +40,9 @@ def addPost():
     #recebe o objeto json
     data = request.json
     #prepara a query para o sql
-    query = "INSERT INTO heroku_5b193e052a7ad86.postagens(TEXTO_POSTAGEM,COR_ID,NUMERO_CURTIDAS) " \
-                    "VALUES(%s,%s,%s)"
-    args = (data['texto'], data['cor'], data['curtidas'])
+    query = "INSERT INTO heroku_5b193e052a7ad86.postagens(TEXTO_POSTAGEM,COR_ID,NUMERO_CURTIDAS,USUARIO_ID) " \
+                    "VALUES(%s,%s,%s,%s)"
+    args = (data['texto'], data['cor'], data['curtidas'],data['autorid'])
     #posicionar o cursor no sql    
     cursor = conn.cursor()
     #executa o comando SQL
@@ -70,6 +70,22 @@ def addUser():
     conn.commit()#consolida as acoes no SQL
     #retorna o objeto para o emitente com o ID atualizado
     return jsonify(data), 201
+
+
+@app.route('/user/<id>', methods=['POST'])
+def addUserOnPost(userID):
+    #recebe o objeto json
+    data = request.json
+    #Adiciona relacao Post x User
+    query = "INSERT INTO heroku_5b193e052a7ad86.usuariosposts(ID_USUARIO,ID_POST) " \
+                    "VALUES(%s,%s)"
+    args = (data['idUsuario'],data['idPost'])    
+    cursor = conn.cursor()
+    cursor.execute(query, args)#executa o comando SQL
+    conn.commit()#consolida as acoes no SQL
+    return jsonify(data), 201
+
+
 
 @app.route('/user/<apelido>', methods=['GET'])
 def getUser(apelido):
