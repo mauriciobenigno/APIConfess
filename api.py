@@ -15,7 +15,9 @@ def abrirDB():
                                        user='bc3024c3520660',
                                        password='41d897e1')
 def fecharDB():
-    conn.close()
+    if not conn == None:
+        conn.close()
+        
 atexit.register(fecharDB) #sempre que detectar que o terminal foi fechado, ele executa
 
 # Flask 
