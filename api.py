@@ -86,13 +86,17 @@ def getUser(apelido):
 
 @app.route('/users/posts/<apelido>', methods=['GET'])
 def getUserPosts(apelido):
+    posts = []
     cursor = conn.cursor()
     cursor.execute("SELECT b.* FROM heroku_5b193e052a7ad86.usuarios a "/
         "INNER JOIN heroku_5b193e052a7ad86.postagens b ON b.USUARIO_ID = a.ID"/
         "where a.APELIDO = '"+apelido+"'")
     row = cursor.fetchone()
-    data = {'id': row[0],'apelido': row[1]}
-    return jsonify(data), 200
+    while row is not None:
+        data = {'id': row[0],'apelido': row[1]}
+        posts.append(data)
+        row = cursor.fetchone()
+    return jsonify(posts), 200
 
 @app.route('/teste', methods=['GET'])
 def testeSQL():
