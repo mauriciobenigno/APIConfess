@@ -28,7 +28,6 @@ app = Flask(__name__)
 
 @app.route('/posts', methods=['POST'])
 def addPost():
-    if conn.is_connected():
         #recebe o objeto json
         data = request.json
         #prepara a query para o sql
@@ -48,7 +47,6 @@ def addPost():
 
 @app.route('/users', methods=['POST'])
 def addUser():
-    if conn.is_connected():
         #recebe o objeto json
         data = request.json
         #Adicionar usuário
@@ -64,7 +62,6 @@ def addUser():
 
 @app.route('/users/fav', methods=['POST'])
 def addUserFav():
-    if conn.is_connected():
         #recebe o objeto json
         data = request.json
         #Adicionar usuário
@@ -79,7 +76,6 @@ def addUserFav():
 
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
-    if conn.is_connected():
         posts = []
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.postagens')
@@ -92,7 +88,6 @@ def getAllConfess():
 
 @app.route('/users/all', methods=['GET'])
 def getAllUsers():
-    if conn.is_connected():
         posts = []
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.usuarios')
@@ -105,7 +100,6 @@ def getAllUsers():
 
 @app.route('/users/<apelido>', methods=['GET'])
 def getUser(apelido):
-    if conn.is_connected():
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.APELIDO ='"+apelido+"' ;")
         row = cursor.fetchone()
@@ -114,7 +108,6 @@ def getUser(apelido):
 
 @app.route('/users/name/<id>', methods=['GET'])
 def getUserName(id):
-    if conn.is_connected():
         cursor = conn.cursor()
         cursor.execute("SELECT a.APELIDO FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.ID ='"+id+"' ;")
         row = cursor.fetchone()
@@ -139,7 +132,6 @@ def getUserPosts(apelido):
 
 @app.route('/users/favs/<apelido>', methods=['GET'])
 def getUserFavs(apelido):
-    if conn.is_connected():
         posts = []
         cursor = conn.cursor()
         query = """SELECT c.* FROM heroku_5b193e052a7ad86.usuarios as a
