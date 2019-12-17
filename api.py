@@ -28,6 +28,7 @@ def carregaPosts():
         data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3]}
         posts.append(data)
         row = cursor.fetchone()
+    print(posts)
 
 
 @app.route('/posts/all', methods=['GET'])

@@ -1,6 +1,9 @@
 import mysql.connector
 from mysql.connector import Error
 
+
+posts = []
+
 def connect(texto, cor, curtidas):
     """ Connect to MySQL database """
     conn = None
@@ -32,9 +35,12 @@ def connect(texto, cor, curtidas):
             row = cursor.fetchone()
      
             while row is not None:
-                print(row[1])
+                data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3]}
+                posts.append(data)
+                print(data)
                 row = cursor.fetchone()
 
+            print(posts)
  
     except Error as e:
         print(e)
