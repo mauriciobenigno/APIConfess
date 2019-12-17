@@ -22,7 +22,6 @@ posts = []
 
 @app.route('/init', methods=['GET'])
 def carregaPosts():
-    posts = []
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.postagens")
     row = cursor.fetchone()
