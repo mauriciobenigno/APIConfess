@@ -61,9 +61,9 @@ def testeSQL():
     return jsonify("Database version : %s " % row), 200
 
 def main():
-    carregaPosts()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+    carregaPosts()
 
 if __name__ == "__main__":
     main()
