@@ -57,7 +57,7 @@ def addPost():
     return jsonify(data), 201
 
 @app.route('/user', methods=['POST'])
-def addPost():
+def addUser():
     #recebe o objeto json
     data = request.json
     #Adicionar usuário
@@ -72,7 +72,7 @@ def addPost():
     return jsonify(data), 201
 
 @app.route('/user/<apelido>', methods=['GET'])
-def getUserInfo(apelido):
+def getUser(apelido):
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.APELIDO ='"+apelido+"' ;")
     row = cursor.fetchone()
