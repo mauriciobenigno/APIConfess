@@ -1,17 +1,18 @@
 import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import json
-from mysql.connector import MySQLConnection
+
+import mysql.connector
+from mysql.connector import Error
 import atexit # para fechar a conn com o banco sempre que a api fechar
 
 # Conexão com o SQL
-db = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
+conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
                                        database='heroku_5b193e052a7ad86',
                                        user='bc3024c3520660',
                                        password='41d897e1')
 def fecharDB():
-    db.close()
+    conn.close()
 atexit.register(fecharDB) #sempre que detectar que o terminal foi fechado, ele executa
 
 # Flask 
@@ -48,38 +49,31 @@ posts = [
 def getAllConfess():
     return jsonify(posts), 200
 
-@app.route('/posts/fav', methods=['GET'])
-def getFavConfess():
-    cursor = db.cursor()
-    cursor.execute("SELECT VERSION()")
-    data = cursor.fetchone()
-    return jsonify(data), 200
-
 @app.route('/posts', methods=['POST'])
-def foo():
+def addPost():
+    #recebe o objeto json
     data = request.json
-    cursor = db.cursor()
-    #query = "INSERT INTO heroku_5b193e052a7ad86.postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES ('Bacana', 5, 5)"
-    #valores = (data['texto'], data['cor'], data['curtidas'])
-    cursor.execute("INSERT INTO heroku_5b193e052a7ad86.postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES ('Bacana', 5, 5)")
-    data['id'] = cursor.lastrowid()
+    #prepara a query para o sql
+    query = "INSERT INTO heroku_5b193e052a7ad86.postagens(TEXTO_POSTAGEM,COR_ID,NUMERO_CURTIDAS) " \
+                    "VALUES(%s,%s,%s)"
+    args = (data['texto'], data['cor'], data['curtidas'])
+    #posicionar o cursor no sql    
+    cursor = conn.cursor()
+    #executa o comando SQL
+    cursor.execute(query, args)
+    #extrai o ID que foi inserido
+    data['id'] = cursor.lastrowid
+    #consolida as acoes no SQL
+    conn.commit()
+    #retorna o objeto para o emitente com o ID atualizado
     return jsonify(data), 201
 
 @app.route('/teste', methods=['GET'])
 def testeSQL():
-    cursor = db.cursor()
+    cursor = conn.cursor()
     cursor.execute("SELECT VERSION()")
-    data = cursor.fetchone()
-    return jsonify("Database version : %s " % data), 200
-
-@app.route('/foo', methods=['POST']) 
-def foo2():
-    data = request.json
-    return jsonify(data)
-
-@app.route('/posts/gen', methods=['POST'])
-def genDB():
-    return jsonify(), 201
+    row = cursor.fetchone()
+    return jsonify("Database version : %s " % row), 200
 
 def main():
     port = int(os.environ.get("PORT", 5000))
