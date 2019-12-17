@@ -12,6 +12,7 @@ conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
                                        user='bc3024c3520660',
                                        password='41d897e1')
 cursor = conn.cursor()
+cursor.execute('SET GLOBAL connect_timeout=18000')
 
 def abrirDB():
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
