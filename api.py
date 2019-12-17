@@ -55,11 +55,11 @@ def getFavConfess():
 @app.route('/posts', methods=['POST'])
 def foo():
     data = request.json
-    cursor = db.cursor()
-    query = "INSERT INTO postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES (%s, %s, %s)"
-    valores = (data['texto'], data['cor'], data['curtidas'])
-    cursor.execute(query,valores)
-    data['id'] = cursor.lastrowid()
+    #cursor = db.cursor()
+    #query = "INSERT INTO postagens (TEXTO_POSTAGEM, COR_ID, NUMERO_CURTIDAS) VALUES (%s, %s, %s)"
+    #valores = (data['texto'], data['cor'], data['curtidas'])
+    #cursor.execute(query,valores)
+    #data['id'] = cursor.lastrowid()
     return jsonify(data), 201
 
 @app.route('/teste', methods=['GET'])
