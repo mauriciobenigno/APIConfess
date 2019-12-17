@@ -18,21 +18,16 @@ atexit.register(fecharDB) #sempre que detectar que o terminal foi fechado, ele e
 # Flask 
 app = Flask(__name__)
 
-posts = []
-
-@app.route('/init', methods=['GET'])
-def carregaPosts():
-    cursor = conn.cursor()
+@app.route('/posts/all', methods=['GET'])
+def getAllConfess():
+	posts = []
+	cursor = conn.cursor()
     cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.postagens")
     row = cursor.fetchone()
     while row is not None:
         data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
         posts.append(data)
         row = cursor.fetchone()
-    return jsonify(posts), 200
-
-@app.route('/posts/all', methods=['GET'])
-def getAllConfess():
     return jsonify(posts), 200
 
 @app.route('/posts', methods=['POST'])
@@ -51,8 +46,6 @@ def addPost():
     data['id'] = cursor.lastrowid
     #consolida as acoes no SQL
     conn.commit()
-    #Adiciona o novo post a lista sem ter que recarregar no sql
-    posts.append(data)
     #retorna o objeto para o emitente com o ID atualizado
     return jsonify(data), 201
 
@@ -76,8 +69,8 @@ def addUser():
 def getUser(apelido):
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.APELIDO ='"+apelido+"' ;")
-    row = cursor.fetchone()
-    return jsonify(row), 200
+    data = cursor.fetchone()
+    return jsonify(data), 200
 
 @app.route('/teste', methods=['GET'])
 def testeSQL():
