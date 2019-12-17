@@ -88,9 +88,10 @@ def getUser(apelido):
 def getUserPosts(apelido):
     posts = []
     cursor = conn.cursor()
-    cursor.execute("SELECT b.* FROM heroku_5b193e052a7ad86.usuarios a "+\
-        "INNER JOIN heroku_5b193e052a7ad86.postagens b ON b.USUARIO_ID = a.ID"+\
-        "WHERE a.APELIDO = '"+apelido+"'")
+    query = """SELECT b.* FROM heroku_5b193e052a7ad86.usuarios a
+            INNER JOIN heroku_5b193e052a7ad86.postagens b ON b.USUARIO_ID = a.ID
+            WHERE a.APELIDO = '{}' .""".format(apelido)
+    cursor.execute(query)
     row = cursor.fetchone()
     while row is not None:
         data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
