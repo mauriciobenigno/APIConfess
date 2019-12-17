@@ -56,6 +56,21 @@ def addPost():
     #retorna o objeto para o emitente com o ID atualizado
     return jsonify(data), 201
 
+@app.route('/user', methods=['POST'])
+def addPost():
+    #recebe o objeto json
+    data = request.json
+    #Adicionar usuário
+    query = "INSERT INTO heroku_5b193e052a7ad86.usuarios(APELIDO) " \
+                    "VALUES(%s)"
+    args = (data['apelido'])    
+    cursor = conn.cursor()
+    cursor.execute(query, args)#executa o comando SQL
+    data['id'] = cursor.lastrowid #extrai o ID que foi inserido e coloca no objeto recebido
+    conn.commit()#consolida as acoes no SQL
+    #retorna o objeto para o emitente com o ID atualizado
+    return jsonify(data), 201
+
 @app.route('/teste', methods=['GET'])
 def testeSQL():
     cursor = conn.cursor()
