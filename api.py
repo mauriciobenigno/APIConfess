@@ -116,7 +116,7 @@ def getUser(apelido):
     return jsonify(data), 200
 
 @app.route('/users/name/<id>', methods=['GET'])
-def getUser(id):
+def getUserName(id):
     if not conn.is_connected():
         abrirDB()
     cursor = conn.cursor()
