@@ -90,13 +90,13 @@ def addLike(userid,postid):
                 SELECT * FROM  heroku_5b193e052a7ad86.usuarioslikes a
                 WHERE  a.ID_USUARIO = {} AND a.ID_POST = {}
         )
-        THEN 1 /* existe*/
-        ELSE 0 /* nao existe*/
+        THEN CAST(1 AS INT) /* existe*/
+        ELSE CAST(0 AS INT) /* nao existe*/
         END AS resultado""".format(usuarioid,postid)
         cursor = conn.cursor()
         cursor.execute(query)
         row = cursor.fetchone()
-        if row['resultado'] = 1:
+        if row['resultado'] == 1:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM heroku_5b193e052a7ad86.usuarioslikes WHERE a.ID_USUARIO = '+usuarioid+' AND a.ID_POST = '+postid+')
             cursor = conn.cursor()
