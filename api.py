@@ -98,7 +98,7 @@ def addLike(userid,postid):
         row = cursor.fetchone()
         if row['resultado'] == 1:
             cursor = conn.cursor()
-            cursor.execute("DELETE FROM heroku_5b193e052a7ad86.usuarioslikes WHERE a.ID_USUARIO = '+usuarioid+' AND a.ID_POST = '+postid+')
+            cursor.execute('DELETE FROM heroku_5b193e052a7ad86.usuarioslikes WHERE a.ID_USUARIO = '+usuarioid+' AND a.ID_POST = '+postid)
             cursor = conn.cursor()
             cursor.execute('UPDATE heroku_5b193e052a7ad86.postagens SET NUMERO_CURTIDAS -= 1 WHERE ID = '+postid)
             conn.commit()
