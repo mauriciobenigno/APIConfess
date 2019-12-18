@@ -7,16 +7,16 @@ from mysql.connector import Error
 import atexit # para fechar a conn com o banco sempre que a api fechar
 
 # Conexão com o SQL
-conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
+conn = (host='us-cdbr-iron-east-05.cleardb.net',
                                        database='heroku_5b193e052a7ad86',
                                        user='bc3024c3520660',
                                        password='41d897e1')
 
+conn = mysql.connector.connect(config)
+
 def abrirDB():
-    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
-                                       database='heroku_5b193e052a7ad86',
-                                       user='bc3024c3520660',
-                                       password='41d897e1')
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    
 def fecharDB():
     if not conn == None:
         conn.close()
@@ -28,11 +28,13 @@ app = Flask(__name__)
 
 @app.route('/posts', methods=['POST'])
 def addPost():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
         #recebe o objeto json
         data = request.json
         #prepara a query para o sql
         query = "INSERT INTO heroku_5b193e052a7ad86.postagens(TEXTO_POSTAGEM,COR_ID,NUMERO_CURTIDAS,USUARIO_ID) " \
-                        "VALUES(%s,%s,%s,%s)"
+                            "VALUES(%s,%s,%s,%s)"
         args = (data['texto'], data['cor'], data['curtidas'],data['autorid'])
         #posicionar o cursor no sql    
         cursor = conn.cursor()
@@ -43,10 +45,13 @@ def addPost():
         #consolida as acoes no SQL
         conn.commit()
         #retorna o objeto para o emitente com o ID bin
+        conn.close()
         return jsonify(data), 201
 
 @app.route('/users', methods=['POST'])
 def addUser():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
         #recebe o objeto json
         data = request.json
         #Adicionar usuário
@@ -60,6 +65,8 @@ def addUser():
 
 @app.route('/users/fav', methods=['POST'])
 def addUserFav():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
         #recebe o objeto json
         data = request.json
         #Adicionar usuário
@@ -70,10 +77,13 @@ def addUserFav():
         cursor.execute(query, args)#executa o comando SQL
         conn.commit()#consolida as acoes no SQL
         #retorna o objeto para o emitente com o ID atualizado
+        conn.close()
         return jsonify(data), 201
 
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
         posts = []
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.postagens')
@@ -82,10 +92,13 @@ def getAllConfess():
             data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
             posts.append(data)
             row = cursor.fetchone()
+        conn.close()
         return jsonify(posts), 200
 
 @app.route('/users/all', methods=['GET'])
 def getAllUsers():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
         posts = []
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.usuarios')
@@ -94,26 +107,34 @@ def getAllUsers():
             data = {'id': row[0],'apelido': row[1]}
             posts.append(data)
             row = cursor.fetchone()
+        conn.close()
         return jsonify(posts), 200
 
 @app.route('/users/<apelido>', methods=['GET'])
 def getUser(apelido):
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.APELIDO ='"+apelido+"' ;")
         row = cursor.fetchone()
         data = {'id': row[0],'apelido': row[1]}
+        conn.close()
         return jsonify(data), 200
 
 @app.route('/users/name/<id>', methods=['GET'])
 def getUserName(id):
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
         cursor = conn.cursor()
         cursor.execute("SELECT a.APELIDO FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.ID ='"+id+"' ;")
         row = cursor.fetchone()
         data = row[0]
+        conn.close()
         return jsonify(data), 200
 
 @app.route('/users/posts/<apelido>', methods=['GET'])
 def getUserPosts(apelido):
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
     if conn.is_connected():
         posts = []
         cursor = conn.cursor()
@@ -126,10 +147,12 @@ def getUserPosts(apelido):
             data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
             posts.append(data)
             row = cursor.fetchone()
+        conn.close()
         return jsonify(posts), 200
 
 @app.route('/users/favs/<apelido>', methods=['GET'])
 def getUserFavs(apelido):
+        conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
         posts = []
         cursor = conn.cursor()
         query = """SELECT b.* FROM heroku_5b193e052a7ad86.usuarios as a
@@ -141,14 +164,17 @@ def getUserFavs(apelido):
             data = {'id': row[0],'usuarioid': row[1],'postid': row[2]}
             posts.append(data)
             row = cursor.fetchone()
+        conn.close()
         return jsonify(posts), 200
 
 @app.route('/teste', methods=['GET'])
 def testeSQL():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
     if conn.is_connected():
         cursor = conn.cursor()
         cursor.execute("SELECT VERSION()")
         row = cursor.fetchone()
+        conn.close()
         return jsonify("Database version : %s " % row), 200
 
 def main():
