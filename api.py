@@ -79,6 +79,23 @@ def addUserFav():
         conn.close()
         return jsonify(data), 201
 
+@app.route('/users/like/<userid>/<postid>', methods=['POST'])
+def addLike(userid,postid):
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
+        #recebe o objeto json
+        data = request.json
+        #Adicionar usuário
+        query = "INSERT INTO heroku_5b193e052a7ad86.usuariosfavoritos(ID_USUARIO,ID_POST) " \
+                        "VALUES(%s,%s)"
+        args = (data['usuarioid'],data['postid'])    
+        cursor = conn.cursor()
+        cursor.execute(query, args)#executa o comando SQL
+        conn.commit()#consolida as acoes no SQL
+        #retorna o objeto para o emitente com o ID atualizado
+        conn.close()
+        return jsonify(data), 201
+
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')

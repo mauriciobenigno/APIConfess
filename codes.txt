@@ -1,0 +1,19 @@
+/* Saber se o registro existe, e devolve uma tabela com nome resultado*/
+
+SELECT CASE WHEN EXISTS (
+	SELECT * FROM  heroku_5b193e052a7ad86.usuarioslikes a
+	WHERE  a.ID_USUARIO = 161 AND a.ID_POST = 421
+)
+THEN 1 /* existe*/
+ELSE 0 /* nao existe*/
+END AS resultado
+
+/*se existir, deleta*/
+cursor = conn.cursor()
+cursor.execute("DELETE FROM heroku_5b193e052a7ad86.usuarioslikes WHERE a.ID_USUARIO = '+usuarioid+' AND a.ID_POST = '+postid+')
+/*se não existir, adiciona*/
+query = "INSERT INTO heroku_5b193e052a7ad86.usuarioslikes(ID_USUARIO,ID_POST) " \
+                        "VALUES(%s,%s)"
+args = (data['usuarioid'],data['postid']) 
+cursor = conn.cursor()
+cursor.execute(query, args)#executa o comando SQL
