@@ -85,13 +85,28 @@ def addLike(userid,postid):
     if conn.is_connected():
         #recebe o objeto json
         data = request.json
-        #Adicionar usuário
-        query = "INSERT INTO heroku_5b193e052a7ad86.usuariosfavoritos(ID_USUARIO,ID_POST) " \
-                        "VALUES(%s,%s)"
-        args = (data['usuarioid'],data['postid'])    
+        #Verifica se existe registro
+        query = """SELECT CASE WHEN EXISTS (
+                SELECT * FROM  heroku_5b193e052a7ad86.usuarioslikes a
+                WHERE  a.ID_USUARIO = {} AND a.ID_POST = {}
+        )
+        THEN 1 /* existe*/
+        ELSE 0 /* nao existe*/
+        END AS resultado""".format(usuarioid,postid)
         cursor = conn.cursor()
-        cursor.execute(query, args)#executa o comando SQL
-        conn.commit()#consolida as acoes no SQL
+        cursor.execute(query)
+        row = cursor.fetchone()
+        if row['resultado'] = 1:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM heroku_5b193e052a7ad86.usuarioslikes WHERE a.ID_USUARIO = '+usuarioid+' AND a.ID_POST = '+postid+')
+            conn.commit()
+        else:
+            query = "INSERT INTO heroku_5b193e052a7ad86.usuarioslikes(ID_USUARIO,ID_POST) " \
+                                    "VALUES(%s,%s)"
+            args = (data['usuarioid'],data['postid']) 
+            cursor = conn.cursor()
+            cursor.execute(query, args)            
+            conn.commit()
         #retorna o objeto para o emitente com o ID atualizado
         conn.close()
         return jsonify(data), 201

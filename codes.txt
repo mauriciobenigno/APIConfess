@@ -1,12 +1,20 @@
 /* Saber se o registro existe, e devolve uma tabela com nome resultado*/
 
-SELECT CASE WHEN EXISTS (
+query = """SELECT CASE WHEN EXISTS (
 	SELECT * FROM  heroku_5b193e052a7ad86.usuarioslikes a
 	WHERE  a.ID_USUARIO = 161 AND a.ID_POST = 421
 )
 THEN 1 /* existe*/
 ELSE 0 /* nao existe*/
-END AS resultado
+END AS resultado"""
+
+query = """SELECT CASE WHEN EXISTS (
+	SELECT * FROM  heroku_5b193e052a7ad86.usuarioslikes a
+	WHERE  a.ID_USUARIO = {} AND a.ID_POST = {}
+)
+THEN 1 /* existe*/
+ELSE 0 /* nao existe*/
+END AS resultado""".format(usuarioid,postid)
 
 /*se existir, deleta*/
 cursor = conn.cursor()
