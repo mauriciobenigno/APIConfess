@@ -7,12 +7,11 @@ from mysql.connector import Error
 import atexit # para fechar a conn com o banco sempre que a api fechar
 
 # Conexão com o SQL
-conn = (host='us-cdbr-iron-east-05.cleardb.net',
+conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
                                        database='heroku_5b193e052a7ad86',
                                        user='bc3024c3520660',
                                        password='41d897e1')
 
-conn = mysql.connector.connect(config)
 
 def abrirDB():
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
