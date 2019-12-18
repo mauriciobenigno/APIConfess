@@ -99,13 +99,17 @@ def addLike(userid,postid):
         if row['resultado'] = 1:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM heroku_5b193e052a7ad86.usuarioslikes WHERE a.ID_USUARIO = '+usuarioid+' AND a.ID_POST = '+postid+')
+            cursor = conn.cursor()
+            cursor.execute('UPDATE heroku_5b193e052a7ad86.postagens SET NUMERO_CURTIDAS -= 1 WHERE ID = '+postid)
             conn.commit()
         else:
             query = "INSERT INTO heroku_5b193e052a7ad86.usuarioslikes(ID_USUARIO,ID_POST) " \
                                     "VALUES(%s,%s)"
             args = (data['usuarioid'],data['postid']) 
             cursor = conn.cursor()
-            cursor.execute(query, args)            
+            cursor.execute(query, args)
+            cursor = conn.cursor()
+            cursor.execute('UPDATE heroku_5b193e052a7ad86.postagens SET NUMERO_CURTIDAS += 1 WHERE ID = '+postid)
             conn.commit()
         #retorna o objeto para o emitente com o ID atualizado
         conn.close()
