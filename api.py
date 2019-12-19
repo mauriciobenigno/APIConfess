@@ -96,7 +96,7 @@ def addLike(usuarioid,postid):
         cursor = conn.cursor()
         cursor.execute(query)
         row = cursor.fetchone()
-        if row['resultado'] == 1:
+        '''if row['resultado'] == 1:
             cursor = conn.cursor()
             cursor.execute('DELETE FROM heroku_5b193e052a7ad86.usuarioslikes WHERE a.ID_USUARIO = '+usuarioid+' AND a.ID_POST = '+postid)
             cursor = conn.cursor()
@@ -110,10 +110,10 @@ def addLike(usuarioid,postid):
             cursor.execute(query, args)
             cursor = conn.cursor()
             cursor.execute('UPDATE heroku_5b193e052a7ad86.postagens SET NUMERO_CURTIDAS += 1 WHERE ID = '+postid)
-            conn.commit()
+            conn.commit()'''
         #retorna o objeto para o emitente com o ID atualizado
         conn.close()
-        return jsonify(data), 201
+        return jsonify(row), 201
 
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
