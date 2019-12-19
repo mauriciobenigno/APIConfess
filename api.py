@@ -83,8 +83,6 @@ def addUserFav():
 def addLike(usuarioid,postid):
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
     if conn.is_connected():
-        #recebe o objeto json
-        data = request.json
         #Verifica se existe registro
         query = """SELECT CASE WHEN EXISTS (
                 SELECT * FROM  heroku_5b193e052a7ad86.usuarioslikes a
@@ -113,7 +111,7 @@ def addLike(usuarioid,postid):
             conn.commit()'''
         #retorna o objeto para o emitente com o ID atualizado
         conn.close()
-        return jsonify(row), 201
+        return jsonify(row[1]), 201
 
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
