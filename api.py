@@ -113,6 +113,22 @@ def addLike(usuarioid,postid):
         conn.close()
         return jsonify(row[0]), 201
 
+@app.route('/users/like/<usuarioid>', methods=['GET'])
+def getAllUserLikes(usuarioid):
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
+        likes = []
+        cursor = conn.cursor()
+        query = "SELECT * FROM heroku_5b193e052a7ad86.usuarioslikes WHERE ID_USUARIO = {}".format(apelido)
+        cursor.execute(query)
+        row = cursor.fetchone()
+        while row is not None:
+            data = {'id': row[0],'usuarioid': row[1],'postid': row[2]}
+            likes.append(data)
+            row = cursor.fetchone()
+        conn.close()
+        return jsonify(likes), 200
+
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
