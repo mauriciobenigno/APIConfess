@@ -111,7 +111,7 @@ def addLike(usuarioid,postid):
             conn.commit()'''
         #retorna o objeto para o emitente com o ID atualizado
         conn.close()
-        return jsonify(row[0][1]), 201
+        return jsonify(row[0]), 201
 
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
