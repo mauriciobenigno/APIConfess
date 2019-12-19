@@ -103,7 +103,7 @@ def addLike(usuarioid,postid):
         else:
             query = "INSERT INTO heroku_5b193e052a7ad86.usuarioslikes(ID_USUARIO,ID_POST) " \
                                     "VALUES(%s,%s)"
-            args = (data['usuarioid'],data['postid']) 
+            args = (usuarioid,postid) 
             cursor = conn.cursor()
             cursor.execute(query, args)
             cursor = conn.cursor()
