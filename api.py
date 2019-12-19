@@ -32,9 +32,9 @@ def addPost():
         #recebe o objeto json
         data = request.json
         #prepara a query para o sql
-        query = "INSERT INTO heroku_5b193e052a7ad86.postagens(TEXTO_POSTAGEM,COR_ID,NUMERO_CURTIDAS,USUARIO_ID) " \
-                            "VALUES(%s,%s,%s,%s)"
-        args = (data['texto'], data['cor'], data['curtidas'],data['autorid'])
+        query = "INSERT INTO heroku_5b193e052a7ad86.postagens(TEXTO_POSTAGEM,COR_ID,NUMERO_CURTIDAS,USUARIO_ID,APELIDO) " \
+                            "VALUES(%s,%s,%s,%s,%s)"
+        args = (data['texto'], data['cor'], data['curtidas'],data['autorid'],data['apelido'])
         #posicionar o cursor no sql    
         cursor = conn.cursor()
         #executa o comando SQL
@@ -138,7 +138,7 @@ def getAllConfess():
         cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.postagens')
         row = cursor.fetchone()
         while row is not None:
-            data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
+            data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4],'apelido': row[5]}
             posts.append(data)
             row = cursor.fetchone()
         conn.close()
@@ -193,7 +193,7 @@ def getUserPosts(apelido):
         cursor.execute(query)
         row = cursor.fetchone()
         while row is not None:
-            data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4]}
+            data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4],'apelido': row[5]}
             posts.append(data)
             row = cursor.fetchone()
         conn.close()
