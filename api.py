@@ -90,8 +90,8 @@ def addLike(usuarioid,postid):
                 SELECT * FROM  heroku_5b193e052a7ad86.usuarioslikes a
                 WHERE  a.ID_USUARIO = {} AND a.ID_POST = {}
         )
-        THEN CAST(1 AS INT) /* existe*/
-        ELSE CAST(0 AS INT) /* nao existe*/
+        THEN 1 /* existe*/
+        ELSE 0 /* nao existe*/
         END AS resultado""".format(usuarioid,postid)
         cursor = conn.cursor()
         cursor.execute(query)
