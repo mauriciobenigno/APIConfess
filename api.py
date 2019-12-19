@@ -119,7 +119,7 @@ def getAllUserLikes(usuarioid):
     if conn.is_connected():
         likes = []
         cursor = conn.cursor()
-        query = "SELECT * FROM heroku_5b193e052a7ad86.usuarioslikes WHERE ID_USUARIO = {}".format(apelido)
+        query = "SELECT * FROM heroku_5b193e052a7ad86.usuarioslikes WHERE ID_USUARIO = {}".format(usuarioid)
         cursor.execute(query)
         row = cursor.fetchone()
         while row is not None:
