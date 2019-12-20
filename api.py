@@ -32,9 +32,9 @@ def addPost():
         #recebe o objeto json
         data = request.json
         #prepara a query para o sql
-        query = "INSERT INTO heroku_5b193e052a7ad86.postagens(TEXTO_POSTAGEM,COR_ID,NUMERO_CURTIDAS,USUARIO_ID,APELIDO) " \
-                            "VALUES(%s,%s,%s,%s,%s)"
-        args = (data['texto'], data['cor'], data['curtidas'],data['autorid'],data['apelido'])
+        query = "INSERT INTO heroku_5b193e052a7ad86.postagens(TEXTO_POSTAGEM,COR_ID,USUARIO_ID,APELIDO) " \
+                            "VALUES(%s,%s,%s,%s)"
+        args = (data['texto'], data['cor'],data['autorid'],data['apelido'])
         #posicionar o cursor no sql    
         cursor = conn.cursor()
         #executa o comando SQL
@@ -62,73 +62,6 @@ def addUser():
         #retorna o objeto para o emitente com o ID atualizado
         return jsonify(data), 201
 
-@app.route('/users/fav', methods=['POST'])
-def addUserFav():
-    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
-    if conn.is_connected():
-        #recebe o objeto json
-        data = request.json
-        #Adicionar usuário
-        query = "INSERT INTO heroku_5b193e052a7ad86.usuariosfavoritos(ID_USUARIO,ID_POST) " \
-                        "VALUES(%s,%s)"
-        args = (data['usuarioid'],data['postid'])    
-        cursor = conn.cursor()
-        cursor.execute(query, args)#executa o comando SQL
-        conn.commit()#consolida as acoes no SQL
-        #retorna o objeto para o emitente com o ID atualizado
-        conn.close()
-        return jsonify(data), 201
-
-@app.route('/users/like/<usuarioid>/<postid>', methods=['POST'])
-def addLike(usuarioid,postid):
-    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
-    if conn.is_connected():
-        #Verifica se existe registro
-        query = """SELECT CASE WHEN EXISTS (
-                SELECT * FROM  heroku_5b193e052a7ad86.usuarioslikes a
-                WHERE  a.ID_USUARIO = {} AND a.ID_POST = {}
-        )
-        THEN 1 /* existe*/
-        ELSE 0 /* nao existe*/
-        END AS resultado""".format(usuarioid,postid)
-        cursor = conn.cursor()
-        cursor.execute(query)
-        row = cursor.fetchone()
-        if row[0] == 1:
-            cursor = conn.cursor()
-            cursor.execute('DELETE FROM heroku_5b193e052a7ad86.usuarioslikes WHERE ID_USUARIO = '+usuarioid+' AND ID_POST = '+postid)
-            cursor = conn.cursor()
-            cursor.execute('UPDATE heroku_5b193e052a7ad86.postagens SET NUMERO_CURTIDAS = NUMERO_CURTIDAS-1 WHERE ID = '+postid)
-            conn.commit()
-        else:
-            query = "INSERT INTO heroku_5b193e052a7ad86.usuarioslikes(ID_USUARIO,ID_POST) " \
-                                    "VALUES(%s,%s)"
-            args = (usuarioid,postid) 
-            cursor = conn.cursor()
-            cursor.execute(query, args)
-            cursor = conn.cursor()
-            cursor.execute('UPDATE heroku_5b193e052a7ad86.postagens SET NUMERO_CURTIDAS = NUMERO_CURTIDAS+1 WHERE ID = '+postid)
-            conn.commit()
-        #retorna o objeto para o emitente com o ID atualizado
-        conn.close()
-        return jsonify(row[0]), 201
-
-@app.route('/users/like/<usuarioid>', methods=['GET'])
-def getAllUserLikes(usuarioid):
-    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
-    if conn.is_connected():
-        likes = []
-        cursor = conn.cursor()
-        query = "SELECT * FROM heroku_5b193e052a7ad86.usuarioslikes WHERE ID_USUARIO = {}".format(usuarioid)
-        cursor.execute(query)
-        row = cursor.fetchone()
-        while row is not None:
-            data = {'id': row[0],'usuarioid': row[1],'postid': row[2]}
-            likes.append(data)
-            row = cursor.fetchone()
-        conn.close()
-        return jsonify(likes), 200
-
 @app.route('/posts/all', methods=['GET'])
 def getAllConfess():
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
@@ -138,7 +71,7 @@ def getAllConfess():
         cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.postagens')
         row = cursor.fetchone()
         while row is not None:
-            data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4],'apelido': row[5]}
+            data = {'id': row[0],'texto': row[1],'cor': row[2],'autorid': row[3],'apelido': row[4]}
             posts.append(data)
             row = cursor.fetchone()
         conn.close()
@@ -193,24 +126,7 @@ def getUserPosts(apelido):
         cursor.execute(query)
         row = cursor.fetchone()
         while row is not None:
-            data = {'id': row[0],'texto': row[1],'cor': row[2],'curtidas': row[3],'autorid': row[4],'apelido': row[5]}
-            posts.append(data)
-            row = cursor.fetchone()
-        conn.close()
-        return jsonify(posts), 200
-
-@app.route('/users/favs/<apelido>', methods=['GET'])
-def getUserFavs(apelido):
-        conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
-        posts = []
-        cursor = conn.cursor()
-        query = """SELECT b.* FROM heroku_5b193e052a7ad86.usuarios as a
-        INNER JOIN heroku_5b193e052a7ad86.usuariosfavoritos as b ON a.ID = b.ID_USUARIO
-        WHERE a.APELIDO = '{}'""".format(apelido)
-        cursor.execute(query)
-        row = cursor.fetchone()
-        while row is not None:
-            data = {'id': row[0],'usuarioid': row[1],'postid': row[2]}
+            data = {'id': row[0],'texto': row[1],'cor': row[2],'autorid': row[3],'apelido': row[4]}
             posts.append(data)
             row = cursor.fetchone()
         conn.close()
