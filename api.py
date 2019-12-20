@@ -53,12 +53,29 @@ def addUser():
     if conn.is_connected():
         #recebe o objeto json
         data = request.json
-        #Adicionar usuário
-        query = "INSERT INTO heroku_5b193e052a7ad86.usuarios(APELIDO) VALUES('"+data['apelido']+"')"
+        #Verifica se existe registro
+        query = """SELECT CASE WHEN EXISTS (
+            SELECT * FROM  heroku_5b193e052a7ad86.usuarios a
+            WHERE  a.APELIDO = '{}'
+            )
+            THEN 1 /* existe*/
+            ELSE 0 /* nao existe*/
+            END AS resultado""".format(data['apelido'])
         cursor = conn.cursor()
-        cursor.execute(query)#executa o comando SQL
-        data['id'] = cursor.lastrowid #extrai o ID que foi inserido e coloca no objeto recebido
-        conn.commit()#consolida as acoes no SQL
+        cursor.execute(query)
+        row = cursor.fetchone()
+        if row[0] == 1: # Retorna usuário existente
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM heroku_5b193e052a7ad86.usuarios as a WHERE a.APELIDO ='"+data['apelido']+"' ;")
+            row = cursor.fetchone()
+            data = {'id': row[0],'apelido': row[1]}
+            conn.close()
+        else: #Adicionar usuário
+            query = "INSERT INTO heroku_5b193e052a7ad86.usuarios(APELIDO) VALUES('"+data['apelido']+"')"
+            cursor = conn.cursor()
+            cursor.execute(query)#executa o comando SQL
+            data['id'] = cursor.lastrowid #extrai o ID que foi inserido e coloca no objeto recebido
+            conn.commit()#consolida as acoes no SQL
         #retorna o objeto para o emitente com o ID atualizado
         return jsonify(data), 201
 
