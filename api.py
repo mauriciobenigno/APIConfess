@@ -79,20 +79,20 @@ def addUser():
         #retorna o objeto para o emitente com o ID atualizado
         return jsonify(data), 201
 
-@app.route('/posts/all', methods=['GET'])
-def getAllConfess():
+@app.route('/empresas/all', methods=['GET'])
+def getAllEmpresas():
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
     if conn.is_connected():
-        posts = []
+        empresas = []
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM heroku_5b193e052a7ad86.postagens')
+        cursor.execute('SELECT codempresa,fantasia,descricao,end_lat,end_long FROM empresa')
         row = cursor.fetchone()
         while row is not None:
-            data = {'id': row[0],'texto': row[1],'cor': row[2],'autorid': row[3],'apelido': row[4]}
-            posts.append(data)
+            data = {'codempresa': row[0],'fantasia': row[1],'descricao': row[2],'latitude': row[3],'longitude': row[4]}
+            empresas.append(data)
             row = cursor.fetchone()
         conn.close()
-        return jsonify(posts), 200
+        return jsonify(empresas), 200
 
 @app.route('/users/all', methods=['GET'])
 def getAllUsers():
