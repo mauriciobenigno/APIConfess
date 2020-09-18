@@ -76,7 +76,7 @@ def addUser():
             cursor.execute(query)#executa o comando SQL
             data['id'] = cursor.lastrowid #extrai o ID que foi inserido e coloca no objeto recebido
             conn.commit()#consolida as acoes no SQL
-        #retorna o objeto para o emitente com o ID atualizado
+        #retorna o objeto para o emitente com o id
         return jsonify(data), 201
 
 @app.route('/empresas/all', methods=['GET'])
