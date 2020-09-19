@@ -97,7 +97,7 @@ def getAllCampanhas():
     if conn.is_connected():
         empresas = []
         cursor = conn.cursor()
-        cursor.execute('SELECT codcampanha,nome,descricao,premio,regra,DATE_FORMAT(dt_inicio, '%Y/%m/%d') dt_inicio,dt_fim,meta,alcancado,incremento,pontuado,codempresa,codusuario FROM fdlc_campanha')
+        cursor.execute('SELECT codcampanha,nome,descricao,premio,regra,dt_inicio,dt_fim,meta,alcancado,incremento,pontuado,codempresa,codusuario FROM fdlc_campanha')
         row = cursor.fetchone()
         while row is not None:
             data = {'codcampanha': row[0],
