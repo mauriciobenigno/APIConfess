@@ -80,7 +80,7 @@ def addCampanha():
         args = (data['nome'], data['descricao'],data['premio'],data['regra'],data['dt_inicio'], data['dt_fim'],data['meta'],data['alcancado'],data['incremento'], data['pontuado'],data['codempresa'],data['codusuario'])
         #posicionar o cursor no sql    
         cursor = conn.cursor()
-        #executa o comando SQL
+        #executa o comando SQL  
         cursor.execute(query, args)
         #extrai o ID que foi inserido
         data['codcampanha'] = cursor.lastrowid
