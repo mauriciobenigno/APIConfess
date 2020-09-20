@@ -207,6 +207,7 @@ def updateUser():
             """.format(data['nome'],'nada',data['cpf'],data['dtnascimento'],data['email'],data['telefone'],data['estado'],data['cidade'],data['cep'],data['image_url'],data['status_cad'],data['codusuario'])
             cursor.execute(queryUpdate)
             row = cursor.fetchone()
+            print(data)
             data = {'codusuario': row[0],
             'nome': row[1],
             'sobrenome': row[2],
