@@ -167,49 +167,19 @@ def addUser():
         data = request.json
         print("Request Json")
         print(request.json)
-        #Verifica se existe registro
-        query = """SELECT CASE WHEN EXISTS (
-            SELECT * FROM  fdlc_usuario a
-            WHERE  a.codusuario = '{}'
-            )
-            THEN 1 /* existe*/
-            ELSE 0 /* nao existe*/
-            END AS resultado""".format(data['codusuario'])
+        query = "INSERT INTO fdlc_usuario(nome,sobrenome,cpf,dtnascimento,email,telefone,estado,cidade,cep,image_url,status_cad) " \
+                            "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        args = ('', '','','',data['email'], '','','','', '',False)
+        #posicionar o cursor no sql    
         cursor = conn.cursor()
-        cursor.execute(query)
-        row = cursor.fetchone()
-        if row[0] == 1: # Retorna usuário existente
-            cursor = conn.cursor()
-            cursor.execute("SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,estado,cidade,cep,image_url,status_cad FROM fdlc_usuario WHERE codusuario ='"+data['codusuario']+"' ;")
-            row = cursor.fetchone()
-            data = {'codusuario': row[0],
-            'nome': row[1],
-            'sobrenome': row[2],
-            'cpf': row[3],
-            'dtnascimento': row[4],
-            'email': row[5],
-            'telefone': row[6],
-            'estado': row[7],
-            'cidade': row[8],
-            'cep': row[9],
-            'image_url': row[10],
-            'status_cad': row[11]}
-            conn.close()
-        else: #Adicionar usuário
-        #prepara a query para o sql
-            query = "INSERT INTO fdlc_usuario(nome,sobrenome,cpf,dtnascimento,email,telefone,estado,cidade,cep,image_url,status_cad) " \
-                                "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            args = ('', '','','',data['email'], '','','','', '',False)
-            #posicionar o cursor no sql    
-            cursor = conn.cursor()
-            #executa o comando SQL
-            cursor.execute(query, args)
-            #extrai o ID que foi inserido
-            data['codusuario'] = cursor.lastrowid
-            #consolida as acoes no SQL
-            conn.commit()
-            #retorna o objeto para o emitente com o ID bin
-            conn.close()
+        #executa o comando SQL
+        cursor.execute(query, args)
+        #extrai o ID que foi inserido
+        data['codusuario'] = cursor.lastrowid
+        #consolida as acoes no SQL
+        conn.commit()
+        #retorna o objeto para o emitente com o ID bin
+        conn.close()
         #retorna o objeto para o emitente com o id
         return jsonify(data), 201
 
