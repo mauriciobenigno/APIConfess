@@ -203,8 +203,8 @@ def updateUser():
         if row[0] == 1: # Retorna usuário existente
             cursor = conn.cursor()
             queryUpdate = """ 
-            UPDATE fdlc_usuario SET nome = {},sobrenome = {},cpf={},dtnascimento={},email={},telefone={},estado={},cidade={},cep={},image_url={},status_cad={} WHERE codusuario = {}
-            """.format(data['nome'],data['sobrenome'],data['cpf'],data['dtnascimento'],data['email'],data['telefone'],data['estado'],data['cidade'],data['cep'],data['image_url'],data['status_cad'],data['codusuario'])
+            UPDATE fdlc_usuario SET nome = '{}',sobrenome = '{}',cpf='{}',dtnascimento='{}',email='{}',telefone='{}',estado='{}',cidade='{}',cep='{}',image_url='{}',status_cad={} WHERE codusuario = {}
+            """.format(data['nome'],'nada',data['cpf'],data['dtnascimento'],data['email'],data['telefone'],data['estado'],data['cidade'],data['cep'],data['image_url'],data['status_cad'],data['codusuario'])
             cursor.execute(queryUpdate)
             row = cursor.fetchone()
             data = {'codusuario': row[0],
