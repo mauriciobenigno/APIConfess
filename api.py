@@ -167,13 +167,6 @@ def addUser():
         data = request.json
         print("Request Json")
         print(request.json)
-        print("Request")
-        print(request)
-        try:
-            data['codusuario']
-        except NameError:
-            data['codusuario'] = 0
-
         #Verifica se existe registro
         query = """SELECT CASE WHEN EXISTS (
             SELECT * FROM  fdlc_usuario a
@@ -205,7 +198,7 @@ def addUser():
         else: #Adicionar usuário
         #prepara a query para o sql
             query = "INSERT INTO fdlc_usuario(nome,sobrenome,cpf,dtnascimento,email,telefone,estado,cidade,cep,image_url,status_cad) " \
-                                "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                                "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             args = ('', '','','',data['email'], '','','','', '',False)
             #posicionar o cursor no sql    
             cursor = conn.cursor()
