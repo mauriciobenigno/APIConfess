@@ -165,7 +165,10 @@ def addUser():
     if conn.is_connected():
         #recebe o objeto json
         data = request.json
-        print("Recebido: "+request.json)
+        print("Request Json")
+        print(request.json)
+        print("Request")
+        print(request)
         try:
             data['codusuario']
         except NameError:
