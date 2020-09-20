@@ -165,7 +165,9 @@ def addUser():
     if conn.is_connected():
         #recebe o objeto json
         data = request.json
-        if(data['codusuario'] is None)
+        try:
+            data['codusuario']
+        except NameError:
             data['codusuario'] = 0
 
         #Verifica se existe registro
