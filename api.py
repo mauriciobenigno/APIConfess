@@ -66,6 +66,45 @@ def getAllEmpresas():
         conn.close()
         return jsonify(empresas), 200
 
+############# COISAS DE PONTOS ####################
+
+@app.route('/ponto', methods=['POST'])
+def addPonto():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
+        #recebe o objeto json
+        data = request.json
+        #prepara a query para o sql
+        query = "INSERT INTO fdlc_ponto(codusuario,codcampanha,pontuacao,dt_ponto) " \
+                            "VALUES(%s,%s,%s,%s,%s)"
+        args = (data['codusuario'], data['codcampanha'],data['pontuacao'],data['dt_ponto'])
+        #posicionar o cursor no sql    
+        cursor = conn.cursor()
+        #executa o comando SQL
+        cursor.execute(query, args)
+        #extrai o ID que foi inserido
+        data['codponto'] = cursor.lastrowid
+        #consolida as acoes no SQL
+        conn.commit()
+        #retorna o objeto para o emitente com o ID bin
+        conn.close()
+        return jsonify(data), 201
+
+@app.route('/ponto/all', methods=['GET'])
+def getAllPontos():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
+        pontos = []
+        cursor = conn.cursor()
+        cursor.execute('SELECT codponto,codusuario,codcampanha,pontuacao,dt_ponto FROM fdlc_ponto')
+        row = cursor.fetchone()
+        while row is not None:
+            data = {'codponto': row[0],'codusuario': row[1],'codcampanha': row[2],'pontuacao': row[3],'dt_ponto': row[4]}
+            pontos.append(data)
+            row = cursor.fetchone()
+        conn.close()
+        return jsonify(pontos), 200
+
 ################ COISAS DE CAMPANHA #################
 
 @app.route('/campanhas', methods=['POST'])
