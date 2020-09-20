@@ -228,7 +228,7 @@ def updateUser():
         data = request.json
         #Verifica se existe registro
         query = """SELECT CASE WHEN EXISTS (
-            SELECT * FROM  fdlc_usuarios a
+            SELECT * FROM  fdlc_usuario a
             WHERE  a.codusuario = '{}'
             )
             THEN 1 /* existe*/
