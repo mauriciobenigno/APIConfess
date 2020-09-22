@@ -15,9 +15,6 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['SECRET_KEY'] = "TesteFidelicard"
 
-login_manager = flask_login.LoginManager()
-login_manager.init_app(app)
-
 # Conexão com o SQL
 conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
                                        database='heroku_5b193e052a7ad86',
@@ -58,7 +55,6 @@ def getToken():
     data = request.json
     print("dados")
     print(data['email'])
-    session['logged_in'] = True
     token = jwt.encode({
         'user': str(data['email']),
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
