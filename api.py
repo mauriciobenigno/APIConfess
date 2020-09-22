@@ -13,7 +13,7 @@ import datetime
 # Configs para Token
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-app.config['SECRET_KEY'] = "TesteFidelicard"
+app.config["SECRET_KEY"] = "fidelicard"
 
 # Conexão com o SQL
 conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
@@ -59,7 +59,7 @@ def getToken():
         'user': str(data['email']),
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
     },
-    app.config['SECRET_KEY'])
+    app.config["SECRET_KEY"])
     print("token")
     print(token)
     return jsonify({'token': token.decode('utf-8')})
