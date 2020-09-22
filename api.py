@@ -62,7 +62,7 @@ def getToken():
         'user_id': str(data['email']),
         'exp': datetime.utcnow() + timedelta(days=JWT_EXP_DELTA_DAYS)
     }
-    jwt_token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
+    token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
     #token = jwt.encode({
     #    'user': str(data['email']),
     #    'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
