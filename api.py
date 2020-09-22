@@ -12,7 +12,11 @@ import datetime
 
 # Configs para Token
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 app.config['SECRET_KEY'] = "TesteFidelicard"
+
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
 
 # Conexão com o SQL
 conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
