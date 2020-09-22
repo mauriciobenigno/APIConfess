@@ -12,7 +12,7 @@ import datetime
 
 # Configs para Token
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'TesteFidelicard'
+app.config['SECRET_KEY'] = "TesteFidelicard"
 
 # Conexão com o SQL
 conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
@@ -49,21 +49,20 @@ def check_for_token(func):
         return func(*args, **kwargs)
     return wrapped
 
-@app.route('/token', methods=['PUT'])
+@app.route('/token', methods=['POST'])
 def getToken():
     data = request.json
     print("dados")
     print(data['email'])
+    session['logged_in'] = True
     token = jwt.encode({
-        'user': data['email'],
+        'user': str(data['email']),
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
     },
     app.config['SECRET_KEY'])
     print("token")
     print(token)
     return jsonify({'token': token.decode('utf-8')})
-
-
 
 ############# COISAS DE EMPRESA ####################
 
