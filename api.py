@@ -58,6 +58,8 @@ def getToken():
         'user': data['email'],
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
     },
+    print("token")
+    print(token)
     app.config['SECRET_KEY'])
     return jsonify({'token': tiken.decode('utf-8')})
 
