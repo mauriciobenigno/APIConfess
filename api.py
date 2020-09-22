@@ -59,7 +59,7 @@ def getToken():
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
     },
     app.config['SECRET_KEY'])
-        print("token")
+    print("token")
     print(token)
     return jsonify({'token': token.decode('utf-8')})
 
