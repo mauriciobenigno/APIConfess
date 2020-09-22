@@ -1,18 +1,10 @@
 import os
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 import mysql.connector
 from mysql.connector import Error
 import atexit # para fechar a conn com o banco sempre que a api fechar
-
-from functools import wraps
-import jwt
-import datetime
-
-# Configs para Token
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'TesteFidelicard'
 
 # Conexão com o SQL
 conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
@@ -32,32 +24,6 @@ atexit.register(fecharDB) #sempre que detectar que o terminal foi fechado, ele e
 
 # Flask 
 app = Flask(__name__)
-
-
-############# COISAS DE TOKEN ####################
-
-def check_for_token(func):
-    @wraps(func)
-    def wrapped(*args, **kwargs):
-        token = request.args.get('token')
-        if not token:
-            return jsonify({'message': 'Missing token'}), 403
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-        except:
-            return jsonify({'message': 'Invalid token'}), 403
-        return func(*args, **kwargs)
-    return wrapped
-
-@app.route('/token', methods=['GET'])
-def getToken():
-    data = request.json
-    token = jwt.encode({
-        'user': data['email'],
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
-    },
-    app.config['SECRET_KEY'])
-    return jsonify({'token': tiken.decode('utf-8')})
 
 
 
@@ -86,7 +52,6 @@ def addEmpresa():
         return jsonify(data), 201
 
 @app.route('/empresas/all', methods=['GET'])
-@check_for_token
 def getAllEmpresas():
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
     if conn.is_connected():
