@@ -49,7 +49,7 @@ def check_for_token(func):
         return func(*args, **kwargs)
     return wrapped
 
-@app.route('/token', methods=['GET'])
+@app.route('/token', methods=['PUT'])
 def getToken():
     data = request.json
     token = jwt.encode({
