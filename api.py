@@ -8,7 +8,8 @@ import atexit # para fechar a conn com o banco sempre que a api fechar
 
 from functools import wraps
 import jwt
-import datetime
+#import datetime
+from datetime import datetime, timedelta
 
 # Configs para Token
 app = Flask(__name__)
