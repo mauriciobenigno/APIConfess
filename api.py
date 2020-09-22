@@ -52,6 +52,8 @@ def check_for_token(func):
 @app.route('/token', methods=['PUT'])
 def getToken():
     data = request.json
+    print("dados")
+    print(data)
     token = jwt.encode({
         'user': data['email'],
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
