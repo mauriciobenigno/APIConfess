@@ -53,7 +53,7 @@ def check_for_token(func):
 def getToken():
     data = request.json
     print("dados")
-    print(data)
+    print(data['email'])
     token = jwt.encode({
         'user': data['email'],
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
