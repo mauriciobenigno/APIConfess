@@ -13,7 +13,10 @@ import datetime
 # Configs para Token
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-app.config["SECRET_KEY"] = "fidelicard"
+
+JWT_SECRET = 'fidelicard'
+JWT_ALGORITHM = 'HS256'
+JWT_EXP_DELTA_DAYS = 365
 
 # Conexão com o SQL
 conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',
@@ -53,14 +56,18 @@ def check_for_token(func):
 @app.route('/token', methods=['POST'])
 def getToken():
     data = request.json
-    print("dados")
-    print(data['email'])
-    token = jwt.encode({
-        'user': str(data['email']),
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
-    },
-    app.config["SECRET_KEY"])
-    print("token")
+    print("chegou aqui")
+    payload = {
+        'user_id': str(data['email']),
+        'exp': datetime.utcnow() + timedelta(days=JWT_EXP_DELTA_DAYS)
+    }
+    jwt_token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
+    #token = jwt.encode({
+    #    'user': str(data['email']),
+    #    'exp': datetime.datetime.utcnow() + datetime.timedelta(days = 365)
+    #},
+    #app.config["SECRET_KEY"])
+    print("chegou aqui 2")
     print(token)
     return jsonify({'token': token.decode('utf-8')})
 
