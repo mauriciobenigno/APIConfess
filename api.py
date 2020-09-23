@@ -45,8 +45,10 @@ def check_for_token(func):
     @wraps(func)
     def wrapped(*args, **kwargs):
         print('TESSSSSSTE')
-        print(request.args)
-        print(request)
+        print(request.args.get('hearder'))
+        print(request.args.get('hearder'))
+        print(request.args.get('Hearders'))
+        print(request.args.get('Hearders'))
         token = request.args.get('Authorization')
         if not token:
             return jsonify({'message': 'Missing token'}), 403
