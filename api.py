@@ -48,7 +48,7 @@ def check_for_token(func):
         if not token:
             return jsonify({'message': 'Missing token'}), 403
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
+            data = jwt.decode(token, JWT_SECRET)
         except:
             return jsonify({'message': 'Invalid token'}), 403
         return func(*args, **kwargs)
