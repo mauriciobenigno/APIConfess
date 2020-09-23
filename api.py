@@ -44,7 +44,7 @@ app = Flask(__name__)
 def check_for_token(func):
     @wraps(func)
     def wrapped(*args, **kwargs):
-        token = request.args.get('Authorization')
+        token = request.args.get('authorization')
         if not token:
             return jsonify({'message': 'Missing token'}), 403
         try:
