@@ -45,7 +45,7 @@ def check_for_token(func):
     @wraps(func)
     def wrapped(*args, **kwargs):
         print('TESSSSSSTE')
-        print(request.args.get('authorization'))
+        print(request.args)
         print(request)
         token = request.args.get('authorization')
         if not token:
