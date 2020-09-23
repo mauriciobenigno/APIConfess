@@ -57,7 +57,6 @@ def check_for_token(func):
 @app.route('/token', methods=['POST'])
 def getToken():
     data = request.json
-    print("chegou aqui")
     payload = {
         'user_id': str(data['email']),
         'exp': datetime.utcnow() + timedelta(days=JWT_EXP_DELTA_DAYS)
@@ -99,6 +98,8 @@ def addEmpresa():
 @app.route('/empresas/all', methods=['GET'])
 @check_for_token
 def getAllEmpresas():
+    print("chegou aqui")
+    print(request.json)
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
     if conn.is_connected():
         empresas = []
