@@ -47,7 +47,7 @@ def check_for_token(func):
         print('TESSSSSSTE')
         print(request.args)
         print(request)
-        token = request.args.get('authorization')
+        token = request.args.get('Authorization')
         if not token:
             return jsonify({'message': 'Missing token'}), 403
         try:
