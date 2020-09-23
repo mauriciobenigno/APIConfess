@@ -44,16 +44,11 @@ app = Flask(__name__)
 def check_for_token(func):
     @wraps(func)
     def wrapped(*args, **kwargs):
-        print('TESSSSSSTE')
-        print(request.args.get('hearder'))
-        print(request.args.get('hearder'))
-        print(request.args.get('Hearders'))
-        print(request.args.get('Hearders'))
         token = request.args.get('Authorization')
         if not token:
             return jsonify({'message': 'Missing token'}), 403
         try:
-            data = jwt.decode(token, JWT_SECRET)
+            data = jwt.decode(token, JWT_SECRET, JWT_ALGORITHM)
         except:
             return jsonify({'message': 'Invalid token'}), 403
         return func(*args, **kwargs)
