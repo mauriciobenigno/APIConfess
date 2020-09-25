@@ -96,7 +96,7 @@ def addEmpresa():
         return jsonify(data), 201
 
 @app.route('/empresas/all', methods=['GET'])
-@check_for_token
+#@check_for_token
 def getAllEmpresas():
     print("chegou aqui")
     print(request.json)
