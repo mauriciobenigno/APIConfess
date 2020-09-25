@@ -224,6 +224,8 @@ def addUser():
     if conn.is_connected():
         #recebe o objeto json
         data = request.json
+        print('TESTEEEEE')
+        print(data)
         query = "INSERT INTO fdlc_usuario(nome,sobrenome,cpf,dtnascimento,email,telefone,estado,cidade,cep,image_url,status_cad) " \
                             "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         args = ('', '','','',data['email'], '','','','', '',False)
@@ -239,9 +241,9 @@ def addUser():
         conn.close()
         #retorna o objeto para o emitente com o id
         if idUsuario > 0:
-            return jsonify(data), 201
+            return jsonify(1), 201
         else:
-            return jsonify(data), 503
+            return jsonify(0), 503
 
 @app.route('/user', methods=['POST'])
 def updateUser():
