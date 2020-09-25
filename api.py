@@ -148,7 +148,7 @@ def getAllPontos():
         '''.format(dataFromApp['email'])
 
         cursor.execute(query)
-        row = cursor.fetchone(){}
+        row = cursor.fetchone()
         while row is not None:
             data = {'codponto': row[0],'codusuario': row[1],'codcampanha': row[2],'pontuacao': row[3],'dt_ponto': row[4]}
             pontos.append(data)
