@@ -233,13 +233,16 @@ def addUser():
         #executa o comando SQL
         cursor.execute(query, args)
         #extrai o ID que foi inserido
-        data['codusuario'] = cursor.lastrowid
+        idUsuario = cursor.lastrowid
         #consolida as acoes no SQL
         conn.commit()
         #retorna o objeto para o emitente com o ID bin
         conn.close()
         #retorna o objeto para o emitente com o id
-        return jsonify(data), 201
+        if idUsuario > 0:
+            return jsonify(data), 201
+        else:
+            return jsonify(data), 503
 
 @app.route('/user', methods=['POST'])
 def updateUser():
