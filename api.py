@@ -241,9 +241,9 @@ def addUser():
         conn.close()
         #retorna o objeto para o emitente com o id
         if idUsuario > 0:
-            return jsonify(1), 201
+            return jsonify({'resultado':idUsuario}), 201
         else:
-            return jsonify(0), 503
+            return jsonify({'resultado':0}), 503
 
 @app.route('/user', methods=['POST'])
 def updateUser():
