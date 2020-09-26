@@ -266,6 +266,7 @@ def updateUser():
             UPDATE fdlc_usuario SET nome = '{}',sobrenome = '{}',cpf='{}',dtnascimento='{}',telefone='{}',estado='{}',cidade='{}',cep='{}',image_url='{}',status_cad={} WHERE email = '{}'
             """.format(data['nome'],'nada',data['cpf'],data['dtnascimento'],data['telefone'],data['estado'],data['cidade'],data['cep'],data['image_url'],data['status_cad'],data['email'])
             cursor.execute(queryUpdate)
+            conn.commit()
             conn.close()
         else: jsonify(data), 401
         return jsonify(data), 201
