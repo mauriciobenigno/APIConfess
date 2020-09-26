@@ -284,7 +284,7 @@ def updateUser():
         else:
             print("usuario nao existe") 
             jsonify(data), 401
-        return jsonify(newdata), 201
+        return jsonify(data), 201
 
 @app.route('/user/login', methods=['POST'])
 def getUserFromEmail():
