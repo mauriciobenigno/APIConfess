@@ -268,7 +268,7 @@ def updateUser():
             cursor.execute(queryUpdate)
             conn.close()
         else: jsonify(data), 401
-        return jsonify(data), 200
+        return jsonify(data), 201
 
 @app.route('/user/login', methods=['POST'])
 def getUserFromEmail():
