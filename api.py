@@ -281,6 +281,9 @@ def updateUser():
                 result.append(data)
                 row = cursor.fetchone()
 
+            print("REsultado: ")
+            print(result)
+
             conn.close()
             return jsonify(result[0]), 201 
         else:
