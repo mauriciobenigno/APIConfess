@@ -269,19 +269,20 @@ def updateUser():
             cursor.execute(queryUpdate)
             conn.commit()
 
+            cursor = conn.cursor()
             query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,estado,cidade,cep,image_url FROM fdlc_usuario where fdlc_usuario.email = '{}'
             '''.format(data['email'])
 
             cursor.execute(query)
+            result = []
             row = cursor.fetchone()
             while row is not None: 
                 newdata = {'codusuario': row[0],'nome': row[1],'sobrenome': row[2],'cpf': row[3],'dtnascimento': row[4],'email': row[5],'telefone': row[6],'estado': row[7],'cidade': row[8],'cep': row[9], 'image_url': row[10]}
-                jsonify(newdata), 201
-                print("RETORNO")
-                print(data)
-
+                result.append(data)
+                row = cursor.fetchone()
 
             conn.close()
+            return jsonify(result[0]), 201
         else:
             print("usuario nao existe") 
             jsonify(data), 401
