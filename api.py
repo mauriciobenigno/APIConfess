@@ -269,7 +269,7 @@ def updateUser():
             conn.commit()
 
             query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,estado,cidade,cep,image_url FROM fdlc_usuario where fdlc_usuario.email like '{}'
-            '''.format(dataFromApp['email'])
+            '''.format(data['email'])
 
             row = cursor.fetchone()
             while row is not None:
