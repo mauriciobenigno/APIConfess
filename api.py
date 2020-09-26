@@ -282,7 +282,7 @@ def updateUser():
                 row = cursor.fetchone()
 
             conn.close()
-            return jsonify(result[0]), 201
+            return jsonify(result[0]), 201 
         else:
             print("usuario nao existe") 
             jsonify(data), 401
