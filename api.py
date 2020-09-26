@@ -251,6 +251,7 @@ def updateUser():
     if conn.is_connected():
         #recebe o objeto json
         data = request.json
+        print(data)
         #Verifica se existe registro
         query = """SELECT CASE WHEN EXISTS ( SELECT * FROM  fdlc_usuario a WHERE  a.email = '{}')
             THEN 1 /* existe*/
