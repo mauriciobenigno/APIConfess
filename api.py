@@ -136,7 +136,7 @@ def addPonto():
         conn.close()
         return jsonify(data), 201
 
-@app.route('/ponto/all', methods=['GET'])
+@app.route('/ponto/all', methods=['POST'])
 def getAllPontos():
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
     if conn.is_connected():
