@@ -190,8 +190,8 @@ def getAllCampanhas():
 
         dataFromApp = request.json
         cursor = conn.cursor()
-        query ='''SELECT codcampanha,nome,descricao,premio,regra,dt_inicio,dt_fim,meta,alcancado,incremento,pontuado,codempresa,codusuario FROM fdlc_campanha 
-                            INNER JOIN fdlc_usuario on fdlc_usuario.codusuario = fdlc_campanha.codusuario where fdlc_usuario.email like '{}'
+        query ='''SELECT c.codcampanha,c.nome,c.descricao,c.premio,c.regra,c.dt_inicio,c.dt_fim,c.meta,c.alcancado,c.incremento,c.pontuado,c.codempresa,c.codusuario FROM fdlc_campanha c 
+                            INNER JOIN fdlc_usuario u on u.codusuario = c.codusuario where u.email like '{}'
         '''.format(dataFromApp['email'])
 
         cursor.execute(query)
