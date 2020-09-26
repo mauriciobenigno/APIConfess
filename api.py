@@ -143,8 +143,8 @@ def getAllPontos():
         dataFromApp = request.json
         pontos = []
         cursor = conn.cursor()
-        query ='''SELECT codponto,codusuario,codcampanha,pontuacao,dt_ponto FROM fdlc_ponto 
-                            INNER JOIN fdlc_usuario on fdlc_usuario.codusuario = fdlc_ponto.codusuario where fdlc_usuario.email like '{}'
+        query ='''SELECT p.codponto,p.codusuario,p.codcampanha,p.pontuacao,p.dt_ponto FROM fdlc_ponto p
+                            INNER JOIN fdlc_usuario u on u.codusuario = p.codusuario where u.email like '{}'
         '''.format(dataFromApp['email'])
 
         cursor.execute(query)
