@@ -274,16 +274,17 @@ def updateUser():
 
             row = cursor.fetchone()
             while row is not None:
-                data = {'codusuario': row[0],'nome': row[1],'sobrenome': row[2],'cpf': row[3],'dtnascimento': row[4],'email': row[5],'telefone': row[6],'estado': row[7],'cidade': row[8],'cep': row[9], 'image_url': row[10]}
+                newdata = {'codusuario': row[0],'nome': row[1],'sobrenome': row[2],'cpf': row[3],'dtnascimento': row[4],'email': row[5],'telefone': row[6],'estado': row[7],'cidade': row[8],'cep': row[9], 'image_url': row[10]}
+                jsonify(newdata), 201
+                print("RETORNO")
+                print(data)
 
-            print("RETORNO")
-            print(data)
 
             conn.close()
         else:
             print("usuario nao existe") 
             jsonify(data), 401
-        return jsonify(data), 201
+        return jsonify(newdata), 201
 
 @app.route('/user/login', methods=['POST'])
 def getUserFromEmail():
