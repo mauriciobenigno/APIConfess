@@ -261,6 +261,7 @@ def updateUser():
         cursor.execute(query)
         row = cursor.fetchone()
         if row[0] == 1: # Retorna usuário existente
+            print("usuario existe")
             cursor = conn.cursor()
             queryUpdate = """ 
             UPDATE fdlc_usuario SET nome = '{}',sobrenome = '{}',cpf='{}',dtnascimento='{}',telefone='{}',estado='{}',cidade='{}',cep='{}',image_url='{}',status_cad={} WHERE email = '{}'
@@ -279,7 +280,9 @@ def updateUser():
             print(data)
 
             conn.close()
-        else: jsonify(data), 401
+        else:
+            print("usuario nao existe") 
+            jsonify(data), 401
         return jsonify(data), 201
 
 @app.route('/user/login', methods=['POST'])
