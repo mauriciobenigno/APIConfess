@@ -226,9 +226,9 @@ def addUser():
         data = request.json
         print('TESTEEEEE')
         print(data)
-        query = "INSERT INTO fdlc_usuario(nome,sobrenome,cpf,dtnascimento,email,telefone,estado,cidade,cep,image_url,status_cad) " \
+        query = "INSERT INTO fdlc_usuario(nome,sobrenome,cpf,dtnascimento,email,telefone,logradouro,complemento,estado,cidade,cep,image_url,status_cad) " \
                             "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        args = ('', '','','',data['email'], '','','','', '',False)
+        args = ('', '','','',data['email'], '','','','','','', '',False)
         #posicionar o cursor no sql    
         cursor = conn.cursor()
         #executa o comando SQL
@@ -264,20 +264,20 @@ def updateUser():
             print("usuario existe")
             cursor = conn.cursor()
             queryUpdate = """ 
-            UPDATE fdlc_usuario SET nome = '{}',sobrenome = '{}',cpf='{}',dtnascimento='{}',telefone='{}',estado='{}',cidade='{}',cep='{}',image_url='{}',status_cad={} WHERE email = '{}'
-            """.format(data['nome'],data['sobrenome'],data['cpf'],data['dtnascimento'],data['telefone'],data['estado'],data['cidade'],data['cep'],data['image_url'],data['status_cad'],data['email'])
+            UPDATE fdlc_usuario SET nome = '{}',sobrenome = '{}',cpf='{}',dtnascimento='{}',telefone='{}',logradouro='{}',complemento='{}',estado='{}',cidade='{}',cep='{}',image_url='{}',status_cad={} WHERE email = '{}'
+            """.format(data['nome'],data['sobrenome'],data['cpf'],data['dtnascimento'],data['telefone'],data['logradouro'],data['complemento'],data['estado'],data['cidade'],data['cep'],data['image_url'],data['status_cad'],data['email'])
             cursor.execute(queryUpdate)
             conn.commit()
 
             cursor = conn.cursor()
-            query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,estado,cidade,cep,image_url,status_cad FROM fdlc_usuario where fdlc_usuario.email = '{}'
+            query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,logradouro,complemento,estado,cidade,cep,image_url,status_cad FROM fdlc_usuario where fdlc_usuario.email = '{}'
             '''.format(data['email'])
 
             cursor.execute(query)
             result = []
             row = cursor.fetchone()
             while row is not None: 
-                newdata = {'codusuario': row[0],'nome': row[1],'sobrenome': row[2],'cpf': row[3],'dtnascimento': row[4],'email': row[5],'telefone': row[6],'estado': row[7],'cidade': row[8],'cep': row[9], 'image_url': row[10], 'status_cad':row[11]}
+                newdata = {'codusuario': row[0],'nome': row[1],'sobrenome': row[2],'cpf': row[3],'dtnascimento': row[4],'email': row[5],'telefone': row[6],'logradouro':row[7],'complemento':row[8],'estado': row[9],'cidade': row[10],'cep': row[11], 'image_url': row[12], 'status_cad':row[13]}
                 result.append(newdata)
                 row = cursor.fetchone()
 
@@ -298,7 +298,7 @@ def getUserFromEmail():
         dataFromApp = request.json
 
         cursor = conn.cursor()
-        query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,estado,cidade,cep,image_url FROM fdlc_usuario where fdlc_usuario.email like '{}'
+        query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,logradouro,complemento,estado,cidade,cep,image_url,status_cad FROM fdlc_usuario where fdlc_usuario.email like '{}'
         '''.format(dataFromApp['email'])
 
         cursor.execute(query)
@@ -311,10 +311,13 @@ def getUserFromEmail():
             'dtnascimento': row[4],
             'email': row[5],
             'telefone': row[6],
-            'estado': row[7],
-            'cidade': row[8],
-            'cep': row[9],
-            'image_url': row[10]}
+            'logradouro': row[7],
+            'complemento': row[8],
+            'estado': row[9],
+            'cidade': row[10],
+            'cep': row[11],
+            'image_url': row[12],
+            'status_cad': row[13]}
             conn.close()
             return jsonify(data), 200
 
