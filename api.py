@@ -227,7 +227,7 @@ def addUser():
         print('TESTEEEEE')
         print(data)
         query = "INSERT INTO fdlc_usuario(nome,sobrenome,cpf,dtnascimento,email,telefone,logradouro,complemento,estado,cidade,cep,image_url,status_cad) " \
-                            "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                            "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         args = ('', '','','',data['email'], '','','','','','', '',False)
         #posicionar o cursor no sql    
         cursor = conn.cursor()
