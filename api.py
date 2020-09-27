@@ -277,7 +277,7 @@ def updateUser():
             result = []
             row = cursor.fetchone()
             while row is not None: 
-                newdata = {'codusuario': row[0],'nome': row[1],'sobrenome': row[2],'cpf': row[3],'dtnascimento': datetime.strptime(row[4], '%a %b %d %y'),'email': row[5],'telefone': row[6],'logradouro':row[7],'complemento':row[8],'estado': row[9],'cidade': row[10],'cep': row[11], 'image_url': row[12], 'status_cad':row[13]}
+                newdata = {'codusuario': row[0],'nome': row[1],'sobrenome': row[2],'cpf': row[3],'dtnascimento': row[4],'email': row[5],'telefone': row[6],'logradouro':row[7],'complemento':row[8],'estado': row[9],'cidade': row[10],'cep': row[11], 'image_url': row[12], 'status_cad':row[13]}
                 result.append(newdata)
                 row = cursor.fetchone()
 
@@ -317,7 +317,7 @@ def getUserFromEmail():
             'cidade': row[10],
             'cep': row[11],
             'image_url': row[12],
-            'status_cad': row[13]}
+            'image_url': row[13]}
             conn.close()
             return jsonify(data), 200
 
