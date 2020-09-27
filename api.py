@@ -317,7 +317,7 @@ def getUserFromEmail():
             'cidade': row[10],
             'cep': row[11],
             'image_url': row[12],
-            'image_url': row[13]}
+            'status_cad': row[13]}
             conn.close()
             return jsonify(data), 200
 
