@@ -71,6 +71,28 @@ def getToken():
     print(token)
     return jsonify({'token': token.decode('utf-8')})
 
+############# COISAS DE LOCATION ####################
+@app.route('/empresas/locais', methods=['POST'])
+def getAllLocais():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
+        dataFromApp = request.json
+        locais = []
+        cursor = conn.cursor()
+        query ='''SELECT codempresa,fantasia,descricao,end_lat,end_long
+                    (6371*acos(cos(radians({}))*cos(radians(end_lat))*cos(radians(end_long)-radians({}))+sin(radians({}))*sin(radians(end_lat)))) AS distancia 
+                  FROM fdlc_empresa HAVING distancia < {}
+        '''.format(dataFromApp['latitude'],dataFromApp['longitude'],dataFromApp['latitude'],dataFromApp['limite'])
+
+        cursor.execute(query)
+        row = cursor.fetchone()
+        while row is not None:
+            data = {'codempresa': row[0],'fantasia': row[1],'descricao': row[2],'end_lat': row[3],'end_long': row[4],'distancia': row[5]}
+            locais.append(data)
+            row = cursor.fetchone()
+        conn.close()
+        return jsonify(locais), 201
+
 ############# COISAS DE EMPRESA ####################
 
 @app.route('/empresas', methods=['POST'])
