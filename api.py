@@ -74,6 +74,7 @@ def getToken():
 ############# COISAS DE LOCATION ####################
 @app.route('/locais', methods=['POST'])
 def getAllLocais():
+    print("CHEGOU REQUISICAO AQUI")
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
     if conn.is_connected():
         dataFromApp = request.json
