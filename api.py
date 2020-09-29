@@ -82,7 +82,8 @@ def getAllLocais():
         
         locais = []
         cursor = conn.cursor()
-        query ='''SELECT codempresa,fantasia,descricao,end_lat,end_long
+
+        query ='''SELECT codempresa,fantasia,descricao,end_lat,end_long,
                     (6371 * acos( cos( radians({}) ) * cos( radians( end_lat ) ) * cos( radians( end_long ) - radians({}) ) + sin( radians({}) ) * sin( radians(end_lat) ) ) ) AS distancia 
                   FROM fdlc_empresa HAVING distancia < {}
         '''.format(dataFromApp['latitude'],dataFromApp['longitude'],dataFromApp['latitude'],dataFromApp['limite'])
