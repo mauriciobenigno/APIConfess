@@ -71,6 +71,70 @@ def getToken():
     print(token)
     return jsonify({'token': token.decode('utf-8')})
 
+
+############# COISAS DE NUMBER AUTH ####################
+@app.route('/number', methods=['POST'])
+def checkAndRegiterNumber():
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
+        #recebe o objeto json
+        data = request.json
+        print(data)
+        #Verifica se existe registro
+        query = """SELECT CASE WHEN EXISTS ( SELECT * FROM  fdlc_conta_numero a WHERE  a.numero = '{}')
+            THEN 1 /* existe*/
+            ELSE 0 /* nao existe*/
+            END AS resultado""".format(data['numero'])
+        cursor = conn.cursor()
+        cursor.execute(query)
+        row = cursor.fetchone()
+        if row[0] == 1: # Numero existe, então verifica se está ativo
+            print("conta existe")
+            cursor = conn.cursor()
+            query =''' SELECT ultima_atividade FROM  fdlc_conta_numero a WHERE  a.numero = '{}'
+            '''.format(data['numero'])
+            cursor.execute(query)
+            resultData = []
+            row = cursor.fetchone()
+            while row is not None: 
+                newdata = {'ultima_atividade': row[0]}
+                resultData.append(newdata)
+                row = cursor.fetchone()
+
+            # Quando passar aqui,vai verificar se tem 3 meses desde a ultima atividade
+            #if resultData[newdata].datetime < '' : # Se tiver abaixo, faz update pra cadastrado = false
+                #cursor = conn.cursor()
+                #queryUpdate = """ 
+                #UPDATE fdlc_conta_numero SET cadastrado = 0 WHERE numero = '{}'
+                #""".format(data['numero'])
+                #cursor.execute(queryUpdate)
+                #conn.commit()
+
+        else: # Numero nao existe, então cria o primeiro registro
+            query = "INSERT INTO fdlc_conta_numero(numero,cadastrado) " \
+                                "VALUES(%s,%s)"
+            args = (data['numero'], 0) # Cadastra o numero e seta 0 (false), pra indicar que precisa preencher o formulario
+            cursor = conn.cursor()
+            cursor.execute(query, args)
+            conn.commit()
+
+        # agora faz select no registro e envia pra apk
+        cursor = conn.cursor()
+        query ='''SELECT numero, cadastro FROM fdlc_conta_numero where fdlc_conta_numero.numero = '{}'
+        '''.format(data['numero'])
+        cursor.execute(query)
+        result = []
+        row = cursor.fetchone()
+        while row is not None: 
+            newdata = {'numero': row[0],'cadastro': row[1]}
+            result.append(newdata)
+            row = cursor.fetchone()
+            jsonify(data), 201
+            conn.close()
+            return jsonify(result[0]), 201 
+
+        return jsonify(data), 201
+
 ############# COISAS DE LOCATION ####################
 @app.route('/locais', methods=['POST'])
 def getAllLocais():
