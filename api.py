@@ -74,7 +74,7 @@ def getToken():
 
 ############# COISAS DE NUMBER AUTH ####################
 @app.route('/number', methods=['POST'])
-def checkAndRegiterNumber():
+def checkAndRegisterNumber():
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
     if conn.is_connected():
         #recebe o objeto json
@@ -102,13 +102,14 @@ def checkAndRegiterNumber():
                 row = cursor.fetchone()
 
             # Quando passar aqui,vai verificar se tem 3 meses desde a ultima atividade
-            #if resultData[newdata].datetime < '' : # Se tiver abaixo, faz update pra cadastrado = false
-                #cursor = conn.cursor()
-                #queryUpdate = """ 
-                #UPDATE fdlc_conta_numero SET cadastrado = 0 WHERE numero = '{}'
-                #""".format(data['numero'])
-                #cursor.execute(queryUpdate)
-                #conn.commit()
+            days = datetime.datetime.now() - resultData[newdata].datetime.date
+            if days > 90  : # Se tiver acima de 90 dias de diferença, faz update pra cadastrado = false
+                cursor = conn.cursor()
+                queryUpdate = """ 
+                UPDATE fdlc_conta_numero SET cadastrado = 0 WHERE numero = '{}'
+                """.format(data['numero'])
+                cursor.execute(queryUpdate)
+                conn.commit()
 
         else: # Numero nao existe, então cria o primeiro registro
             query = "INSERT INTO fdlc_conta_numero(numero,cadastrado) " \
@@ -134,6 +135,21 @@ def checkAndRegiterNumber():
             return jsonify(result[0]), 201 
 
         return jsonify(data), 201
+
+@app.route('/number/status', methods=['POST'])
+def updateNumberStatus():
+    print(request.json)
+    dataFromApp = request.json
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
+        cursor = conn.cursor()
+            queryUpdate = """ 
+            UPDATE fdlc_conta_numero SET status = '{}'
+            """.format(data['cadastrado'])
+            cursor.execute(queryUpdate)
+            conn.commit()
+        return jsonify(locais), 201
+
 
 ############# COISAS DE LOCATION ####################
 @app.route('/locais', methods=['POST'])
