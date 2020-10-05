@@ -360,7 +360,7 @@ def addUser():
         print(data)
         query = "INSERT INTO fdlc_usuario(nome,sobrenome,cpf,dtnascimento,email,telefone,logradouro,complemento,bairro,estado,cidade,cep,image_url,status_cad) " \
                             "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        args = ('', '','','',data['email'], '','','','','','','', '',False)
+        args = ('', '','','','',data['telefone'], ,'','','','','', '',False)
         #posicionar o cursor no sql    
         cursor = conn.cursor()
         #executa o comando SQL
@@ -385,10 +385,10 @@ def updateUser():
         data = request.json
         print(data)
         #Verifica se existe registro
-        query = """SELECT CASE WHEN EXISTS ( SELECT * FROM  fdlc_usuario a WHERE  a.email = '{}')
+        query = """SELECT CASE WHEN EXISTS ( SELECT * FROM  fdlc_usuario a WHERE  a.telefone = '{}')
             THEN 1 /* existe*/
             ELSE 0 /* nao existe*/
-            END AS resultado""".format(data['email'])
+            END AS resultado""".format(data['telefone'])
         cursor = conn.cursor()
         cursor.execute(query)
         row = cursor.fetchone()
@@ -402,8 +402,8 @@ def updateUser():
             conn.commit()
 
             cursor = conn.cursor()
-            query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,logradouro,complemento,bairro,estado,cidade,cep,image_url,status_cad FROM fdlc_usuario where fdlc_usuario.email = '{}'
-            '''.format(data['email'])
+            query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,logradouro,complemento,bairro,estado,cidade,cep,image_url,status_cad FROM fdlc_usuario where fdlc_usuario.telefone = '{}'
+            '''.format(data['telefone'])
 
             cursor.execute(query)
             result = []
@@ -430,8 +430,8 @@ def getUserFromEmail():
         dataFromApp = request.json
 
         cursor = conn.cursor()
-        query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,logradouro,complemento,bairro,estado,cidade,cep,image_url,status_cad FROM fdlc_usuario where fdlc_usuario.email like '{}'
-        '''.format(dataFromApp['email'])
+        query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,logradouro,complemento,bairro,estado,cidade,cep,image_url,status_cad FROM fdlc_usuario where fdlc_usuario.telefone like '{}'
+        '''.format(dataFromApp['telefone'])
 
         cursor.execute(query)
         row = cursor.fetchone()
