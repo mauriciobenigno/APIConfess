@@ -112,9 +112,9 @@ def checkAndRegisterNumber():
                 conn.commit()
 
         else: # Numero nao existe, então cria o primeiro registro
-            query = "INSERT INTO fdlc_conta_numero(numero,cadastrado) " \
-                                "VALUES(%s,%s)"
-            args = (data['numero'], 0) # Cadastra o numero e seta 0 (false), pra indicar que precisa preencher o formulario
+            query = "INSERT INTO fdlc_conta_numero(numero,ultima_atividade,cadastrado) " \
+                                "VALUES(%s,%s,%s)"
+            args = (data['numero'],datetime.datetime.now(), 0) # Cadastra o numero, data/hora e seta 0 (false) no cadastrado, pra indicar que precisa preencher o formulario
             cursor = conn.cursor()
             cursor.execute(query, args)
             conn.commit()
@@ -149,6 +149,32 @@ def updateNumberStatus():
             cursor.execute(queryUpdate)
             conn.commit()
         return jsonify(locais), 201
+
+@app.route('/number/cpf', methods=['POST'])
+def checkCpfByrNumber():
+    print(request.json)
+    dataFromApp = request.json
+    conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
+    if conn.is_connected():
+        # agora faz select no registro e envia pra apk
+        cursor = conn.cursor()
+        query ='''
+        SELECT count(conta,*) as existe FROM fdlc_conta_numero as conta
+        INNER JOIN fdlc_usuario as user on user.codusuario = conta.codusuario
+        WHERE conta.numero = '{}' AND usuario.cpf like '{}'
+        '''.format(data['numero'],data['cpf'])
+        cursor.execute(query)
+        resultado = None
+        row = cursor.fetchone()
+        while row is not None: 
+            quantidade = row[0]
+            if quantidade > 0:
+                resultado = {'resultado':1}
+            else: 
+                resultado = {'resultado':0}
+            row = cursor.fetchone()
+        conn.close()
+        return jsonify(resultado), 201
 
 
 ############# COISAS DE LOCATION ####################
