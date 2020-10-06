@@ -102,8 +102,8 @@ def checkAndRegisterNumber():
                 row = cursor.fetchone()
 
             # Quando passar aqui,vai verificar se tem 3 meses desde a ultima atividade
-            days = datetime.now() - resultData[newdata].datetime.date
-            if days > 90  : # Se tiver acima de 90 dias de diferença, faz update pra cadastrado = false
+            days = datetime.now() - resultData[0][newdata].datetime.date
+            if days > 90 : # Se tiver acima de 90 dias de diferença, faz update pra cadastrado = false
                 cursor = conn.cursor()
                 queryUpdate = """ 
                 UPDATE fdlc_conta_numero SET cadastrado = 0 WHERE numero = {}
