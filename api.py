@@ -81,7 +81,7 @@ def checkAndRegisterNumber():
         data = request.json
         print(data)
         #Verifica se existe registro
-        query = """SELECT CASE WHEN EXISTS ( SELECT * FROM  fdlc_conta_numero a WHERE  a.numero = '{}')
+        query = """SELECT CASE WHEN EXISTS ( SELECT * FROM  fdlc_conta_numero a WHERE  a.numero = {})
             THEN 1 /* existe*/
             ELSE 0 /* nao existe*/
             END AS resultado""".format(data['numero'])
@@ -106,7 +106,7 @@ def checkAndRegisterNumber():
             if days > 90  : # Se tiver acima de 90 dias de diferença, faz update pra cadastrado = false
                 cursor = conn.cursor()
                 queryUpdate = """ 
-                UPDATE fdlc_conta_numero SET cadastrado = 0 WHERE numero = '{}'
+                UPDATE fdlc_conta_numero SET cadastrado = 0 WHERE numero = {}
                 """.format(data['numero'])
                 cursor.execute(queryUpdate)
                 conn.commit()
