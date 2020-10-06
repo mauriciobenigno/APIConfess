@@ -114,7 +114,7 @@ def checkAndRegisterNumber():
         else: # Numero nao existe, então cria o primeiro registro
             query = "INSERT INTO fdlc_conta_numero(numero,ultima_atividade,cadastrado) " \
                                 "VALUES(%s,%s,%s)"
-            args = (data['numero'],datetime.datetime.now(), 0) # Cadastra o numero, data/hora e seta 0 (false) no cadastrado, pra indicar que precisa preencher o formulario
+            args = (data['numero'],datetime.now(), 0) # Cadastra o numero, data/hora e seta 0 (false) no cadastrado, pra indicar que precisa preencher o formulario
             cursor = conn.cursor()
             cursor.execute(query, args)
             conn.commit()
