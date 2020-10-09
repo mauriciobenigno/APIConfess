@@ -103,9 +103,9 @@ def checkAndRegisterNumber():
            
             #print(resultData['ultima_atividade'])
             #date_time_obj = datetime.strptime(resultData['ultima_atividade'], '%Y-%m-%d %H:%M:%S')
-            days = datetime.now() - resultData['ultima_atividade']
-            if days > 90 : # Se tiver acima de 90 dias de diferença, faz update pra cadastrado = false
-                print("ultima atividade foi a "+str(days))
+            delta = datetime.now() - resultData['ultima_atividade']
+            if delta.days > 90 : # Se tiver acima de 90 dias de diferença, faz update pra cadastrado = false
+                print("ultima atividade foi a "+str(delta.days))
                 cursor = conn.cursor()
                 queryUpdate = """ 
                 UPDATE fdlc_conta_numero SET cadastrado = 0 WHERE numero = {}
@@ -113,7 +113,7 @@ def checkAndRegisterNumber():
                 cursor.execute(queryUpdate)
                 conn.commit()
             else:
-                print("ultima atividade foi a "+str(days))
+                print("ultima atividade foi a "+str(delta.days))
 
         else: # Numero nao existe, então cria o primeiro registro
             query = "INSERT INTO fdlc_conta_numero(numero,ultima_atividade,cadastrado) " \
