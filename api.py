@@ -100,17 +100,20 @@ def checkAndRegisterNumber():
                 row = cursor.fetchone()
 
             # Quando passar aqui,vai verificar se tem 3 meses desde a ultima atividade
-            print("ultima atividade: ")
-            print(resultData['ultima_atividade'])
-            date_time_obj = datetime.strptime(resultData['ultima_atividade'], '%Y-%m-%d %H:%M:%S')
-            days = datetime.now() - date_time_obj
+           
+            #print(resultData['ultima_atividade'])
+            #date_time_obj = datetime.strptime(resultData['ultima_atividade'], '%Y-%m-%d %H:%M:%S')
+            days = datetime.now() - resultData['ultima_atividade']
             if days > 90 : # Se tiver acima de 90 dias de diferença, faz update pra cadastrado = false
+                print("ultima atividade foi a "+str(days))
                 cursor = conn.cursor()
                 queryUpdate = """ 
                 UPDATE fdlc_conta_numero SET cadastrado = 0 WHERE numero = {}
                 """.format(data['numero'])
                 cursor.execute(queryUpdate)
                 conn.commit()
+            else:
+                print("ultima atividade foi a "+str(days))
 
         else: # Numero nao existe, então cria o primeiro registro
             query = "INSERT INTO fdlc_conta_numero(numero,ultima_atividade,cadastrado) " \
@@ -121,6 +124,7 @@ def checkAndRegisterNumber():
             conn.commit()
 
         # agora faz select no registro e envia pra apk
+        print("carregando dados da conta")
         cursor = conn.cursor()
         query ='''SELECT numero, cadastrado FROM fdlc_conta_numero where fdlc_conta_numero.numero = '{}'
         '''.format(data['numero'])
