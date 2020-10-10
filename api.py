@@ -376,7 +376,6 @@ def addUser():
         #consolida as acoes no SQL
         conn.commit()
         #retorna o objeto para o emitente com o ID bin
-        conn.close()
         #faz update na conta vinculando o usuário
         print("Vinculando cadastro "+str(idUsuario)+" a conta  "+str(data['telefone']))
         cursor = conn.cursor()
@@ -385,7 +384,8 @@ def addUser():
         """.format(idUsuario,datetime.now(),data['telefone'])
         cursor.execute(queryUpdate)
         conn.commit()
-
+        
+        conn.close()
         #retorna o objeto para o emitente com o id
         if idUsuario > 0:
             return jsonify({'resultado':idUsuario}), 201
