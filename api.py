@@ -402,8 +402,8 @@ def updateUser():
             print("usuario existe")
             cursor = conn.cursor()
             queryUpdate = """ 
-            UPDATE fdlc_usuario SET nome = '{}',sobrenome = '{}',cpf='{}',dtnascimento='{}',telefone='{}',logradouro='{}',complemento='{}',bairro='{}',estado='{}',cidade='{}',cep='{}',image_url='{}',status_cad={} WHERE email = '{}'
-            """.format(data['nome'],data['sobrenome'],data['cpf'],data['dtnascimento'],data['telefone'],data['logradouro'],data['complemento'],data['bairro'],data['estado'],data['cidade'],data['cep'],data['image_url'],data['status_cad'],data['email'])
+            UPDATE fdlc_usuario SET nome = '{}',sobrenome = '{}',cpf='{}',dtnascimento='{}',email='{}',logradouro='{}',complemento='{}',bairro='{}',estado='{}',cidade='{}',cep='{}',image_url='{}',status_cad={} WHERE telefone = '{}'
+            """.format(data['nome'],data['sobrenome'],data['cpf'],data['dtnascimento'],data['email'],data['logradouro'],data['complemento'],data['bairro'],data['estado'],data['cidade'],data['cep'],data['image_url'],data['status_cad'],data['telefone'])
             cursor.execute(queryUpdate)
             conn.commit()
 
