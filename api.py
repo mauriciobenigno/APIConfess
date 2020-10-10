@@ -151,7 +151,7 @@ def updateNumberStatus():
     if conn.is_connected():
         cursor = conn.cursor()
         queryUpdate = """ UPDATE fdlc_conta_numero SET status = '{}'
-        """.format(data['cadastrado'])
+        """.format(dataFromApp['cadastrado'])
         cursor.execute(queryUpdate)
         conn.commit()
         return jsonify(locais), 201
@@ -377,6 +377,15 @@ def addUser():
         conn.commit()
         #retorna o objeto para o emitente com o ID bin
         conn.close()
+        #faz update na conta vinculando o usuário
+        print("Vinculando cadastro "+str(idUsuario)+" a conta  "+str(data['telefone']))
+        cursor = conn.cursor()
+        queryUpdate = """ 
+        UPDATE fdlc_conta_numero SET codusuario = {}, ultima_atividade = {}, cadastrado = 1  WHERE numero = {}
+        """.format(idUsuario,datetime.now(),data['telefone'])
+        cursor.execute(queryUpdate)
+        conn.commit()
+
         #retorna o objeto para o emitente com o id
         if idUsuario > 0:
             return jsonify({'resultado':idUsuario}), 201
