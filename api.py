@@ -89,6 +89,7 @@ def checkAndRegisterNumber():
         cursor.execute(query)
         row = cursor.fetchone()
         if row[0] == 1: # Numero existe, então verifica se está ativo
+            print("Conta existe")
             cursor = conn.cursor()
             query =''' SELECT ultima_atividade FROM  fdlc_conta_numero a WHERE  a.numero = '{}'
             '''.format(data['numero'])
@@ -116,6 +117,7 @@ def checkAndRegisterNumber():
                 print("ultima atividade foi a "+str(delta.days))
 
         else: # Numero nao existe, então cria o primeiro registro
+            print("Conta  não existe")
             query = "INSERT INTO fdlc_conta_numero(numero,ultima_atividade,cadastrado) " \
                                 "VALUES(%s,%s,%s)"
             args = (data['numero'],datetime.now(), 0) # Cadastra o numero, data/hora e seta 0 (false) no cadastrado, pra indicar que precisa preencher o formulario
