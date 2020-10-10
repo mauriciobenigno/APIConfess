@@ -382,10 +382,9 @@ def addUser():
         queryUpdate = """ 
         UPDATE fdlc_conta_numero 
         SET codusuario = {}, 
-        ultima_atividade = {}, 
         cadastrado = 1  
         WHERE numero = {}
-        """.format(idUsuario,datetime.now(),data['telefone'])
+        """.format(idUsuario,data['telefone'])
         cursor.execute(queryUpdate)
         conn.commit()
 
