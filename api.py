@@ -157,7 +157,7 @@ def updateNumberStatus():
         return jsonify(locais), 201
 
 @app.route('/number/cpf', methods=['POST'])
-def checkCpfByrNumber():
+def checkCpfByNumber():
     print(request.json)
     dataFromApp = request.json
     conn = mysql.connector.connect(host='us-cdbr-iron-east-05.cleardb.net',database='heroku_5b193e052a7ad86',user='bc3024c3520660',password='41d897e1')
@@ -168,7 +168,7 @@ def checkCpfByrNumber():
         SELECT count(conta,*) as existe FROM fdlc_conta_numero as conta
         INNER JOIN fdlc_usuario as user on user.codusuario = conta.codusuario
         WHERE conta.numero = '{}' AND usuario.cpf like '{}'
-        '''.format(data['numero'],data['cpf'])
+        '''.format(dataFromApp['numero'],dataFromApp['cpf'])
         cursor.execute(query)
         resultado = None
         row = cursor.fetchone()
