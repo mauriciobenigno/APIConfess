@@ -128,13 +128,13 @@ def checkAndRegisterNumber():
         # agora faz select no registro e envia pra apk
         print("carregando dados da conta")
         cursor = conn.cursor()
-        query ='''SELECT numero, cadastrado FROM fdlc_conta_numero where fdlc_conta_numero.numero = '{}'
+        query ='''SELECT codconta, numero, ultima_atividade, cadastrado, codusuario  FROM fdlc_conta_numero WHERE numero = '{}'
         '''.format(data['numero'])
         cursor.execute(query)
         result = []
         row = cursor.fetchone()
         while row is not None: 
-            newdata = {'numero': row[0],'cadastrado': row[1]}
+            newdata = {'codconta': row[0],'numero': row[1],'ultima_atividade': row[2],'cadastrado': row[3],'codusuario': row[4]}
             result.append(newdata)
             row = cursor.fetchone()
             jsonify(data), 201
