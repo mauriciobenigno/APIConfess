@@ -165,9 +165,9 @@ def checkCpfByNumber():
         # agora faz select no registro e envia pra apk
         cursor = conn.cursor()
         query ='''
-        SELECT count(conta,*) as existe FROM fdlc_conta_numero as conta
+        SELECT count(conta.*) as existe FROM fdlc_conta_numero as conta
         INNER JOIN fdlc_usuario as user on user.codusuario = conta.codusuario
-        WHERE conta.numero = '{}' AND usuario.cpf like '{}'
+        WHERE conta.numero = '{}' AND user.cpf like '{}'
         '''.format(dataFromApp['numero'],dataFromApp['cpf'])
         cursor.execute(query)
         resultado = None
