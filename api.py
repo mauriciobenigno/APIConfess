@@ -448,7 +448,11 @@ def getUserFromNumber():
         dataFromApp = request.json
 
         cursor = conn.cursor()
-        query ='''SELECT codusuario,nome,sobrenome,cpf,dtnascimento,email,telefone,logradouro,complemento,bairro,estado,cidade,cep,image_url,status_cad FROM fdlc_usuario where fdlc_usuario.telefone like '{}'
+        query ='''
+        SELECT usuario.codusuario,usuario.nome,usuario.sobrenome,usuario.cpf,usuario.dtnascimento,usuario.email,usuario.telefone,usuario.logradouro,usuario.complemento,usuario.bairro,usuario.estado,usuario.cidade,usuario.cep,usuario.image_url,usuario.status_cad 
+        FROM fdlc_usuario usuario
+        INNER JOIN fdlc_conta_numero conta ON conta.codusuario =  usuario.codusuario
+        WHERE conta.numero = {}
         '''.format(dataFromApp['numero'])
 
         cursor.execute(query)
