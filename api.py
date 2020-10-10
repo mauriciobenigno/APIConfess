@@ -380,11 +380,15 @@ def addUser():
         print("Vinculando cadastro "+str(idUsuario)+" a conta  "+str(data['telefone']))
         cursor = conn.cursor()
         queryUpdate = """ 
-        UPDATE fdlc_conta_numero SET codusuario = {}, ultima_atividade = {}, cadastrado = 1  WHERE numero = {}
+        UPDATE fdlc_conta_numero 
+        SET codusuario = {}, 
+        ultima_atividade = {}, 
+        cadastrado = 1  
+        WHERE numero = {}
         """.format(idUsuario,datetime.now(),data['telefone'])
         cursor.execute(queryUpdate)
         conn.commit()
-        
+
         conn.close()
         #retorna o objeto para o emitente com o id
         if idUsuario > 0:
