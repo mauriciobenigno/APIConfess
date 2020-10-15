@@ -282,8 +282,8 @@ def getAllPontos():
         pontos = []
         cursor = conn.cursor()
         query ='''SELECT p.codponto,p.codusuario,p.codcampanha,p.pontuacao,p.dt_ponto FROM fdlc_ponto p
-                            INNER JOIN fdlc_usuario u on u.codusuario = p.codusuario where u.email like '{}'
-        '''.format(dataFromApp['email'])
+                            INNER JOIN fdlc_usuario u on u.codusuario = p.codusuario where u.codusuario = {}
+        '''.format(dataFromApp['codusuario'])
 
         cursor.execute(query)
         row = cursor.fetchone()
@@ -329,8 +329,8 @@ def getAllCampanhas():
         dataFromApp = request.json
         cursor = conn.cursor()
         query ='''SELECT c.codcampanha,c.nome,c.descricao,c.premio,c.regra,c.dt_inicio,c.dt_fim,c.meta,c.alcancado,c.incremento,c.pontuado,c.codempresa,c.codusuario FROM fdlc_campanha c 
-                            INNER JOIN fdlc_usuario u on u.codusuario = c.codusuario where u.email like '{}'
-        '''.format(dataFromApp['email'])
+                            INNER JOIN fdlc_usuario u on u.codusuario = c.codusuario where u.codusuario = {}
+        '''.format(dataFromApp['codusuario'])
 
         cursor.execute(query)
 
